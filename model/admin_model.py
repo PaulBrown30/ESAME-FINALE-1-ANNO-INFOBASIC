@@ -11,14 +11,16 @@ class Admin(Account):
     }
 
     def __repr__(self):
-        return f"[{__class__.__tablename__}] --> (name: {self.name}, surname: {self.surname}, email: {self.email}, password: {self.password}, account_type: {self.account_type})"
+        return f"[{__class__.__tablename__}] --> (name: {self.name}, surname: {self.surname}, email: {self.email}, password: {self.password})"
     
     def __str__(self):
         return f"{self.name} - {self.surname} - {self.email}"
-    
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return False
         
-        if other.id == self.id:
-            return True
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "surname": self.surname,
+            "email": self.email,
+            "password": self.password
+        }

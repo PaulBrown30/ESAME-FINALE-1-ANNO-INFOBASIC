@@ -25,5 +25,4 @@ class Account(Base):
         if not isinstance(other, self.__class__):
             return False
         
-        if other.id == self.id:
-            return True
+        return other.id == self.id

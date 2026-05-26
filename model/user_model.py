@@ -15,10 +15,12 @@ class User(Account):
     
     def __str__(self):
         return f"{self.name} - {self.surname} - {self.email}"
-    
-    def __eq__(self, other):
-        if not isinstance(other, self.__class__):
-            return False
-        
-        if other.id == self.id:
-            return True
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "surname": self.surname,
+            "email": self.email,
+            "password": self.password
+        }
