@@ -13,5 +13,11 @@ def get_session():
 
 
 def db_init():
-
+    import model.account_model
+    import model.admin_model
+    import model.courier_model
+    import model.package_model
+    import model.status_model
+    import model.user_model
+    
     Base.metadata.create_all(bind = engine)

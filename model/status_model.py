@@ -1,5 +1,7 @@
 from persistence.db_config import Base
 from sqlalchemy import Column,Integer, String
+from sqlalchemy.orm import relationship
+from model.package_model import package_status
 
 class Status(Base):
     __tablename__ = "status"
@@ -7,6 +9,10 @@ class Status(Base):
     id = Column(String(10),primary_key=True)
     name = Column(String(30), nullable=False, unique= False)
     description = Column(String(100), nullable=False)
+
+    packages = relationship("Package",
+                            secondary= package_status,
+                            back_populates= "statuses" )
 
     def __repr__(self):
         return f"[{self.__class__.__tablename__}] --> (id: {self.id}, name: {self.name}, description: {self.de})"

@@ -1,0 +1,1 @@
+1) IL to dict per le relazioni deve invocare il to dict della tabella in relazione oppure uno spacchettamento! (da scegleire in corso d'opera))

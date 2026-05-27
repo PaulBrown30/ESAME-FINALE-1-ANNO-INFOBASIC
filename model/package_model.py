@@ -1,6 +1,24 @@
 from persistence.db_config import Base
-from sqlalchemy import Column, Integer, String, Numeric, ForeignKey
+from sqlalchemy import Column, Integer, String, Numeric, ForeignKey, Table, DateTime
 from sqlalchemy.orm import relationship
+import datetime
+
+
+package_user = Table(
+    "package_user",
+    Base.metadata,
+    Column("package_id", String(10),ForeignKey("package.id"), primary_key=True),
+    Column("user_id",Integer ,ForeignKey("user.id"), primary_key=True),    
+    )
+
+package_status = Table(
+    "package_status",
+    Base.metadata,
+    Column("package_id", String(10), ForeignKey("package.id"), primary_key=True),
+    Column("status_id", String(10), ForeignKey("status.id"), primary_key=True),
+    Column("datetime",DateTime, default= datetime.datetime.now(), nullable= False)
+    )
+
 
 class Package(Base):
     __tablename__= "package"
@@ -17,9 +35,15 @@ class Package(Base):
     estimated_arrival_date = Column(String, nullable= False)
 
     courier_id = Column(Integer, ForeignKey("courier.id"), nullable= False)
-
     package_courier = relationship("Courier",back_populates="courier_package")
 
+    users = relationship("User",
+                        secondary= package_courier,
+                        back_populates= "packages")
+
+    statuses = relationship("Status",
+                            secondary= package_status,
+                            back_populates= "packages")
 
     def __repr__(self):
         return f"[{self.__class__.__tablename__}] --> (id: {self.id}, price: {self.price}, weight: {self.weight}, sender_name: {self.sender_name}, sender_surname: {self.sender_surname}, sender_cap: {self.sender_cap}, receiver_name: {self.receiver_name}, receiver_surname: {self.receiver_surname}, receiver_cap: {self.receiver_cap}, estimated_arrival_date: {self.estimated_arrival_date})"
@@ -44,7 +68,6 @@ class Package(Base):
             "receiver_name": self.receiver_name,
             "receiver_cap": self.receiver_cap,
             "estimated_arrival_date": self.estimated_arrival_date,
-            "courier_id": self.courier_id
         }
 
 

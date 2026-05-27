@@ -1,10 +1,16 @@
 from model.account_model import Account
 from sqlalchemy import String,Integer,Column, ForeignKey
+from sqlalchemy.orm import relationship
+from model.package_model import package_user
 
 class User(Account):
     __tablename__ = "user"
 
     id = Column(Integer,ForeignKey("account.id", ondelete= "CASCADE"),primary_key= True)
+
+    packages = relationship("Package",
+                            secondary= package_user,
+                            back_populates= "users")
 
     __mapper_args__ = {
         "polymorphic_identity" : "user"
