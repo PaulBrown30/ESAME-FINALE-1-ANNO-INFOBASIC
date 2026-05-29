@@ -8,8 +8,8 @@ def get_by_id(session,courier_id):
 def get_all(session):
     return session.execute(select(Courier)).scalars().all()
 
-def get_available_courier(session):
-    return session.execute(select(Courier).outerjoin(Courier.packages).group_by(Courier.id).having(func.count(Package.id)< 10)).scalars().all()
+def get_available_couriers(session):
+    return session.execute(select(Courier).outerjoin(Courier.packages).group_by(Courier.id).having(func.count(Package.id)< Courier.max_load)).scalars().all()
     
 def create(session,courier):
     session.add(courier)
@@ -17,11 +17,11 @@ def create(session,courier):
     return courier
 
 def update(session,courier):
-    session.merge(courier)
+    courier = session.merge(courier)
     session.commit()
     return courier
 
-def delete(session,courier_id):
+def delete_by_id(session,courier_id):
     courier = session.get(Courier,courier_id)
     if courier == None:
         return False
@@ -30,7 +30,8 @@ def delete(session,courier_id):
     session.commit()
     return True
 
-
+def check_used_phone_number(session,courier):
+    return session.esecute(select(Courier)).where(Courier.id != courier.id, Courier.phone_number == courier.phone_number).scalar_one_or_none()
 
 
 

@@ -15,6 +15,8 @@ def create(session,status):
 def check_used_name(session,status):
     return session.execute(select(Status).where(Status.name == status.name, Status.id != status.id)).scalar_one_or_none()
 
+def check_used_id(session,status):
+    return session.execute(select(Status).where(Status.id == status.id)).scalar_one_or_none()
 
 
 

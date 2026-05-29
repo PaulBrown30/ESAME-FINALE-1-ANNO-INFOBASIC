@@ -21,7 +21,6 @@ def add_package(session,user_id,package_id):
     if package == None:
         return False
     
-
     user.packages.append(package)
     session.commit()
     return True

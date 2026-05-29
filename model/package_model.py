@@ -25,14 +25,14 @@ class Package(Base):
 
     id = Column(String(10), primary_key= True)
     price = Column(Numeric(8,2), nullable= False)
-    weight = Column(Numeric(5,2), nullable= False)
+    weight = Column(Numeric(6,2), nullable= False)
     sender_name = Column(String(30), nullable= False)
     sender_surname = Column(String(30), nullable= False)
     sender_cap = Column(String(5), nullable= False)
     receiver_name = Column(String(30), nullable= False)
     receiver_surname = Column(String(30), nullable= False)
     receiver_cap = Column(String(5), nullable= False)
-    estimated_arrival_date = Column(String, nullable= False)
+    estimated_arrival_date = Column(String(10), nullable= False)
 
     courier_id = Column(Integer, ForeignKey("courier.id"), nullable= False)
     courier = relationship("Courier",back_populates="packages")
@@ -66,6 +66,7 @@ class Package(Base):
             "sender_surname": self.sender_surname,
             "sender_cap": self.sender_cap,
             "receiver_name": self.receiver_name,
+            "receiver_surname": self.receiver_surname,
             "receiver_cap": self.receiver_cap,
             "estimated_arrival_date": self.estimated_arrival_date,
         }

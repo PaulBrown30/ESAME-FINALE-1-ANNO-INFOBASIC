@@ -13,7 +13,7 @@ def create(session,package):
     session.commit()
     return package
 
-def delete(session,package_id):
+def delete_by_id(session,package_id):
     package = session.get(Package,package_id)
     if package == None:
         return False
@@ -35,3 +35,6 @@ def add_status(session,package_id,status_id):
     package.statuses.append(status)
     session.commit()
     return True
+
+def check_used_id(session,package):
+    return session.execute(select(Package).where(Package.id == package.id)).scalar_one_or_none()

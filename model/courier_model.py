@@ -6,9 +6,9 @@ class Courier(Account):
     __tablename__ = "courier"
 
     id = Column(Integer,ForeignKey("account.id", ondelete= "CASCADE"),primary_key= True)
-    phone_number = Column(String(10), nullable= False)
-    max_load = Column(Integer, nullable= False, default = 0)
-    birth_date = Column(String, nullable= False)
+    phone_number = Column(String(10), nullable= False, unique=True)
+    max_load = Column(Integer, nullable= False, default = 10)
+    birth_date = Column(String(10), nullable= False)
 
     packages = relationship("Package",back_populates="courier")
 
