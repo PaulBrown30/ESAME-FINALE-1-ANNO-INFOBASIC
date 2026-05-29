@@ -1,5 +1,6 @@
 from model.package_model import Package
-from sqlalchemy import select
+from model.status_model import Status
+from sqlalchemy import select, not_
 
 def get_by_id(session,package_id):
     return session.get(Package,package_id)
@@ -7,7 +8,6 @@ def get_by_id(session,package_id):
 def get_all(session):
     return session.execute(select(Package)).scalars().all()
     
-
 def create(session,package):
     session.add(package)
     session.commit()
@@ -22,3 +22,16 @@ def delete(session,package_id):
     session.commit()
     return True
 
+def add_status(session,package_id,status_id):
+    # questa riga controlla che esista un pacco con quel ID e che non abbia gia uno status con l'ID da inserire!
+    package = session.execute(select(Package).where(Package.id == package_id, not_(Package.statuses.any(Status.id == status_id)))).scalar_one_or_none()
+    if package == None:
+        return False
+    
+    status = session.get(Status,status_id)
+    if status == None:
+        return False
+    
+    package.statuses.append(status)
+    session.commit()
+    return True

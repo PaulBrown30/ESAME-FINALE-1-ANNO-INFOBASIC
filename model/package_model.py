@@ -35,10 +35,10 @@ class Package(Base):
     estimated_arrival_date = Column(String, nullable= False)
 
     courier_id = Column(Integer, ForeignKey("courier.id"), nullable= False)
-    package_courier = relationship("Courier",back_populates="courier_package")
+    courier = relationship("Courier",back_populates="packages")
 
     users = relationship("User",
-                        secondary= package_courier,
+                        secondary= package_user,
                         back_populates= "packages")
 
     statuses = relationship("Status",

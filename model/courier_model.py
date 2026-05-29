@@ -10,7 +10,7 @@ class Courier(Account):
     max_load = Column(Integer, nullable= False, default = 0)
     birth_date = Column(String, nullable= False)
 
-    courier_package = relationship("Package",back_populates="package_courier")
+    packages = relationship("Package",back_populates="courier")
 
     __mapper_args__ = {
         "polymorphic_identity" : "courier"
