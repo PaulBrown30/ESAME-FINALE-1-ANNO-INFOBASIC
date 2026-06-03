@@ -1,4 +1,5 @@
 from model.courier_model import Courier
+from model.account_model import Account
 from model.package_model import Package
 from sqlalchemy import select,func
 
@@ -9,7 +10,7 @@ def get_all(session):
     return session.execute(select(Courier)).scalars().all()
 
 def get_available_couriers(session):
-    return session.execute(select(Courier).outerjoin(Courier.packages).group_by(Courier.id).having(func.count(Package.id)< Courier.max_load)).scalars().all()
+    return session.execute(select(Courier).outerjoin(Courier.packages).group_by(Courier.id, Account.id).having(func.count(Package.id)< Courier.max_load)).scalars().all()
     
 def create(session,courier):
     session.add(courier)
@@ -20,6 +21,7 @@ def create(session,courier):
 def update(session,courier):
     courier = session.merge(courier)
     session.commit()
+    session.refresh(courier)
     return courier
 
 def delete_by_id(session,courier_id):

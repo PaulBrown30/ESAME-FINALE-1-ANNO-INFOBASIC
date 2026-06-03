@@ -36,7 +36,7 @@ def create(user_data):
 def add_package(user_id,package_id):
     with get_session() as session:
 
-        is_package_added = user_repository.add_package(session,user_id,package_id)
+        is_package_added = user_repository.add_package(session,user_id,package_id["package_id"])
     
         if is_package_added is False:
             raise AppException("Non è stato possibile aggiungere il pacco all'utente",404)

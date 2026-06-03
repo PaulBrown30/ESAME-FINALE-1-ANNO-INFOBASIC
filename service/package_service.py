@@ -31,7 +31,7 @@ def create(package_data):
             sender_cap = package_data["sender_cap"],
             receiver_name = package_data["receiver_name"],
             receiver_surname = package_data["receiver_surname"],
-            recevier_cap = package_data["recevier_cap"],
+            receiver_cap = package_data["receiver_cap"],
             estimated_arrival_date = package_data["estimated_arrival_date"],
             courier_id = package_data["courier_id"]          
         )
@@ -54,7 +54,7 @@ def delete_by_id(package_id):
 def add_status(package_id,status_id):
     with get_session() as session:
 
-        is_status_added = package_repository.add_status(session,package_id,status_id)
+        is_status_added = package_repository.add_status(session,package_id,status_id["status_id"])
     
         if is_status_added is False:
             raise AppException("Non è stato possibile aggiungere il pacco all'utente",404)
@@ -64,37 +64,43 @@ def add_status(package_id,status_id):
 
 def _validate_data(package_data):
 
-    for field in ["id","price","weight","sender_name","sender_surname","sender_cap","receiver_name","receiver_surname","receiver_cap","estimated_arriaval_date","courier_id"]:
+    for field in ["id","sender_name","sender_surname","sender_cap","receiver_name","receiver_surname","receiver_cap","estimated_arrival_date"]:
         if field not in package_data:
             raise AppException(f"Il campo {field} non è presente",400)
         if package_data.get(field) is None or len(package_data[field].strip()) == 0:
             raise AppException(f"Il campo {field} non è valido",400)
         
-        if len(package_data["id"].strip()) != 10:
-            raise AppException("Il codice del pacco deve essre lungo 10 caratteri",400)
+    for field in ["price","weight"]:
+        if field not in package_data:
+            raise AppException(f"Il campo {field} non è presente",400)
+        if package_data.get(field) is None:
+            raise AppException(f"Il campo {field} non è valido",400)        
 
-        for field in ["sender_name","sender_surname","receiver_name","receiver_surname"]:
-            if len(package_data[field]) > 30:
-                raise AppException(f"il campo {field} deve avere massimo 30 caratteri",400)
-            if len(package_data[field].strip()) < 3:
-                raise AppException(f"il campo {field} deve avere almeno 3 caratteri",400)
-            
-        for field in ["sender_cap","receiver_cap"]:
-            if len(package_data[field]) != 5:
-                raise AppException(f"il campo {field} deve avere 5 caratteri",400)
-            
-        for field in ["price","weight"]:
-            if type(package_data[field]) is not float or type(package_data[field]) is not int:
-                raise AppException(f"Il campo {field} deve essere un numero",400)
-            if package_data[field] < 0:
-                raise AppException(f"Il campo {field} richeide un valore positivo",400)
+    if len(package_data["id"].strip()) != 10:
+        raise AppException("Il codice del pacco deve essre lungo 10 caratteri",400)
 
-        if package_data["price"] >= 1000000:
-            raise AppException(f"Il campo price non puo superare il valore di 1.000.000 ")
+    for field in ["sender_name","sender_surname","receiver_name","receiver_surname"]:
+        if len(package_data[field]) > 30:
+            raise AppException(f"il campo {field} deve avere massimo 30 caratteri",400)
+        if len(package_data[field].strip()) < 3:
+            raise AppException(f"il campo {field} deve avere almeno 3 caratteri",400)
         
-        if package_data["weight"] >= 1000:
-            raise AppException(f"Il campo weight non puo superare il valore di 10000")
+    for field in ["sender_cap","receiver_cap"]:
+        if len(package_data[field]) != 5:
+            raise AppException(f"il campo {field} deve avere 5 caratteri",400)
+        
+    for field in ["price","weight"]:
+        if type(package_data[field]) is not float and type(package_data[field]) is not int:
+            raise AppException(f"Il campo {field} deve essere un numero",400)
+        if package_data[field] < 0:
+            raise AppException(f"Il campo {field} richeide un valore positivo",400)
 
-        if len(package_data["estimated_arrival_date"]) > 10:
-            raise AppException("La data di arrivo stimata deve avere massimo 10 caratteri")
+    if package_data["price"] >= 1000000:
+        raise AppException(f"Il campo price non puo superare il valore di 1.000.000 ")
+    
+    if package_data["weight"] >= 1000:
+        raise AppException(f"Il campo weight non puo superare il valore di 10000")
+
+    if len(package_data["estimated_arrival_date"]) > 10:
+        raise AppException("La data di arrivo stimata deve avere massimo 10 caratteri")
         

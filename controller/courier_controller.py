@@ -45,7 +45,8 @@ def create():
 def update(courier_id):  
     try:
         dati_courier = request.get_json()
-        admin = courier_service.update(courier_id,dati_courier)
+        courier = courier_service.update(courier_id,dati_courier)
+        return jsonify(courier.to_dict()),200
 
     except AppException as e:
         return jsonify(e.to_dict()),e.status

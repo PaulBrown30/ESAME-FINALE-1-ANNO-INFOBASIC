@@ -25,12 +25,12 @@ def create():
         return jsonify(e.to_dict()),e.status
     
 @user_bp.route("/users/<int:user_id>", methods = ["PATCH"])
-def add_status(user_id):
+def add_package(user_id):
     
     try:
         package_id = request.get_json()
-        user_service.add_status(user_id,package_id)
-        return jsonify({"message":f"Il pacco {package_id} è stato aggiunto correttamente","status":200})
+        user_service.add_package(user_id,package_id)
+        return jsonify({"message":f"Il pacco {package_id["package_id"]} è stato aggiunto correttamente","status":200})
     
     except AppException as e:
         return jsonify(e.to_dict()),e.status  

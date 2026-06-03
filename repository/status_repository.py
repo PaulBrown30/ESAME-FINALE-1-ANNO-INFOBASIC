@@ -11,7 +11,7 @@ def create(session,status):
     session.add(status)
     session.commit()
     session.refresh(status)
-    return session
+    return status
 
 def check_used_name(session,status):
     return session.execute(select(Status).where(Status.name == status.name, Status.id != status.id)).scalar_one_or_none()
