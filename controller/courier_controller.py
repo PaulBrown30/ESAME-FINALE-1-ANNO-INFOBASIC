@@ -22,7 +22,7 @@ def get_all():
     except AppException as e:
         return jsonify(e.to_dict()),e.status    
 
-@courier_bp.route("/courier/create")
+@courier_bp.route("/courier/create", methods = ["POST"])
 def create():
     try:
         dati_courier = request.get_json()

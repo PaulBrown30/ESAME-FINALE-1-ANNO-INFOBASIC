@@ -82,13 +82,17 @@ def delete_by_id(courier_id):
         return True
 
 def _validate_data(courier_data):
-    for field in ["name","surname","email","password","phone_number","max_load","birth_date"]:
+    for field in ["name","surname","email","password","phone_number","birth_date"]:
         if field not in courier_data:
             raise AppException(f"Il campo {field} non è presente",400)
         if courier_data.get(field) is None or len(courier_data[field].strip()) == 0 or len(courier_data[field]) > 30:
             raise AppException(f"Il campo {field} ha un valore non valido",400)
         
-        
+    if "max_load" not in courier_data:
+            raise AppException(f"Il campo max_load non è presente",400)
+    if courier_data.get("max_load") is None:
+        raise AppException(f"Il campo {field} ha un valore non valido",400)
+    
     for field in ["name", "surname"]: 
         if len(courier_data[field].strip()) < 3:
             raise AppException(f"Il campo {field} deve avere almeno 3 caratteri",400)
@@ -107,7 +111,7 @@ def _validate_data(courier_data):
     if type(courier_data["max_load"]) != int or courier_data["max_load"] < 0:
         raise AppException("Il carico massimo non è valido",400)
     
-    if courier_data["birth_date"] > 10:
+    if len(courier_data["birth_date"]) > 10:
         raise AppException("La data di nascita deve avere meno di 10 caratteri",400)
     
 

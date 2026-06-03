@@ -31,7 +31,7 @@ def delete_by_id(session,courier_id):
     return True
 
 def check_used_phone_number(session,courier):
-    return session.esecute(select(Courier)).where(Courier.id != courier.id, Courier.phone_number == courier.phone_number).scalar_one_or_none()
+    return session.execute(select(Courier).where(Courier.id != courier.id, Courier.phone_number == courier.phone_number)).scalar_one_or_none()
 
 
 
