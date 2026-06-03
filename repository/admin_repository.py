@@ -1,4 +1,4 @@
-from model.account_model import Admin
+from model.admin_model import Admin
 
 
 def get_by_id(session,admin_id):

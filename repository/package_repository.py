@@ -10,6 +10,11 @@ def get_all(session):
     
 def create(session,package):
     session.add(package)
+
+    status = session.get(Status,"S-001")
+    if status == None:
+        return False
+    
     session.commit()
     return package
 
@@ -25,6 +30,7 @@ def delete_by_id(session,package_id):
 def add_status(session,package_id,status_id):
     # questa riga controlla che esista un pacco con quel ID e che non abbia gia uno status con l'ID da inserire!
     package = session.execute(select(Package).where(Package.id == package_id, not_(Package.statuses.any(Status.id == status_id)))).scalar_one_or_none()
+
     if package == None:
         return False
     

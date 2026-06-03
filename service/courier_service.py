@@ -47,13 +47,13 @@ def create(courier_data):
 
         return courier_repository.create(session,courier)
 
-def update(courier_data):
+def update(courier_id,courier_data):
     _validate_data(courier_data)
 
     with get_session() as session:
 
         courier = Courier(
-            id = courier_data["id"],
+            id = courier_id,
             name = courier_data["name"],
             surname = courier_data["surname"],
             email = courier_data["email"],

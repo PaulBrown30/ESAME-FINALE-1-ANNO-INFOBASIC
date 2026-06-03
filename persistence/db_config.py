@@ -19,5 +19,6 @@ def db_init():
     import model.package_model
     import model.status_model
     import model.user_model
-    
+
+    Base.metadata.drop_all(bind = engine)   
     Base.metadata.create_all(bind = engine)
