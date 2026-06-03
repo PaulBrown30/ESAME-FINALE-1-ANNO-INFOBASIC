@@ -9,6 +9,7 @@ def get_by_id(session,user_id):
 def create(session,user):
     session.add(user)
     session.commit()
+    session.refresh(user)
     return user
 
 def add_package(session,user_id,package_id):

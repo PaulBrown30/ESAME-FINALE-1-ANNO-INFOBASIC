@@ -14,6 +14,7 @@ def get_available_couriers(session):
 def create(session,courier):
     session.add(courier)
     session.commit()
+    session.refresh(courier)
     return courier
 
 def update(session,courier):

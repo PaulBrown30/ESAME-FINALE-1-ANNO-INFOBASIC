@@ -15,7 +15,10 @@ def create(session,package):
     if status == None:
         return False
     
+    package.statuses.append(status)
+
     session.commit()
+    session.refresh(package)
     return package
 
 def delete_by_id(session,package_id):

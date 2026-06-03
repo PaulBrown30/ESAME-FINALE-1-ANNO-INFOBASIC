@@ -10,6 +10,7 @@ def get_all(session):
 def create(session,status):
     session.add(status)
     session.commit()
+    session.refresh(status)
     return session
 
 def check_used_name(session,status):
