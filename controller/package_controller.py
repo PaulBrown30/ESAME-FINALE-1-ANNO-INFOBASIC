@@ -4,7 +4,7 @@ from exception.app_exception import AppException
 
 package_bp = Blueprint("package",__name__,url_prefix="/api")
 
-@package_bp.route("/package/<int:package_id>")
+@package_bp.route("/packages/<int:package_id>")
 def get_by_id(package_id):   
     try:
         package = package_service.get_by_id(package_id)
@@ -13,7 +13,7 @@ def get_by_id(package_id):
     except AppException as e:
         return jsonify(e.to_dict()),e.status
     
-@package_bp.route("/package")
+@package_bp.route("/packages")
 def get_all():   
     try:
         packages = package_service.get_all()
@@ -22,7 +22,7 @@ def get_all():
     except AppException as e:
         return jsonify(e.to_dict()),e.status    
 
-@package_bp.route("/package/create")
+@package_bp.route("/packages/create")
 def create():
     try:
         dati_package = request.get_json()
@@ -32,7 +32,7 @@ def create():
     except AppException as e:
         return jsonify(e.to_dict()),e.status
    
-@package_bp.route("/package/<int:package_id>", methods = ["DELETE"])
+@package_bp.route("/packages/<int:package_id>", methods = ["DELETE"])
 def delete_by_id(package_id):
     try:
         package_service.delete_by_id(package_id)
@@ -41,7 +41,7 @@ def delete_by_id(package_id):
     except AppException as e:
         return jsonify(e.to_dict()),e.status
     
-@package_bp.route("/package/<int:package_id>", methods = ["PATCH"])
+@package_bp.route("/packages/<int:package_id>", methods = ["PATCH"])
 def add_status(package_id):
     
     try:

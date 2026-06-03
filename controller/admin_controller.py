@@ -4,7 +4,7 @@ from exception.app_exception import AppException
 
 admin_bp = Blueprint("admin",__name__,url_prefix="/api")
 
-@admin_bp.route("/admin/<int:admin_id>")
+@admin_bp.route("/admins/<int:admin_id>")
 def get_by_id(admin_id):
     
     try:
@@ -15,7 +15,7 @@ def get_by_id(admin_id):
         return jsonify(e.to_dict()),e.status
     
 
-@admin_bp.route("/admin/create",methods = ["POST"])
+@admin_bp.route("/admins/create",methods = ["POST"])
 def create():
     try:
         dati_admin = request.get_json()

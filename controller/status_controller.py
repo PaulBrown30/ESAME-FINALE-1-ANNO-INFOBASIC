@@ -4,7 +4,7 @@ from exception.app_exception import AppException
 
 status_bp = Blueprint("status",__name__,url_prefix="/api")
 
-@status_bp.route("/status/<int:status_id>")
+@status_bp.route("/statuses/<int:status_id>")
 def get_by_id(status_id):   
     try:
         status = status_service.get_by_id(status_id)
@@ -13,7 +13,7 @@ def get_by_id(status_id):
     except AppException as e:
         return jsonify(e.to_dict()),e.status
     
-@status_bp.route("/status")
+@status_bp.route("/statuses")
 def get_all():   
     try:
         statuses = status_service.get_all()
@@ -22,7 +22,7 @@ def get_all():
     except AppException as e:
         return jsonify(e.to_dict()),e.status    
 
-@status_bp.route("/status/create")
+@status_bp.route("/statuses/create")
 def create():
     try:
         dati_status = request.get_json()
