@@ -26,3 +26,11 @@ class Account(Base):
             return False
         
         return other.id == self.id
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "surname": self.surname,
+            "email": self.email
+        }
