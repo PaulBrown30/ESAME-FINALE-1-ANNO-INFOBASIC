@@ -24,7 +24,7 @@ def create():
     except AppException as e:
         return jsonify(e.to_dict()),e.status
     
-@user_bp.route("/users/<int:user_id>", methods = ["PATCH"])
+@user_bp.route("/users/<int:user_id>/add_package", methods = ["POST"])
 def add_package(user_id):
     
     try:

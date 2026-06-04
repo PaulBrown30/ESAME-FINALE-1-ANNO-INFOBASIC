@@ -1,5 +1,5 @@
 from persistence.db_config import Base
-from sqlalchemy import Column, Integer, String, Numeric, ForeignKey, Table, DateTime
+from sqlalchemy import Column, Integer, String, Numeric, ForeignKey, Table, DateTime, Boolean
 from sqlalchemy.orm import relationship
 import datetime
 
@@ -33,6 +33,7 @@ class Package(Base):
     receiver_surname = Column(String(30), nullable= False)
     receiver_cap = Column(String(5), nullable= False)
     estimated_arrival_date = Column(String(10), nullable= False)
+    active = Column(Boolean, default= True)
 
     courier_id = Column(Integer, ForeignKey("courier.id"), nullable= False)
     courier = relationship("Courier",back_populates="packages")

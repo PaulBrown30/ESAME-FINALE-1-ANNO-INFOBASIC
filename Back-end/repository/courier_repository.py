@@ -10,8 +10,8 @@ def get_all(session):
     return session.execute(select(Courier)).scalars().all()
 
 def get_available_couriers(session):
-    return session.execute(select(Courier).outerjoin(Courier.packages).group_by(Courier.id, Account.id).having(func.count(Package.id)< Courier.max_load)).scalars().all()
-    
+    return session.execute(select(Courier).outerjoin(Courier.packages,Package.active == True).group_by(Courier.id, Account.id).having(func.count(Package.id)< Courier.max_load)).scalars().all()
+
 def create(session,courier):
     session.add(courier)
     session.commit()

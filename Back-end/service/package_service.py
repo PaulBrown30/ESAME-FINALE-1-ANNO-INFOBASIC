@@ -57,11 +57,20 @@ def add_status(package_id,status_id):
         is_status_added = package_repository.add_status(session,package_id,status_id["status_id"])
     
         if is_status_added is False:
-            raise AppException("Non è stato possibile aggiungere il pacco all'utente",404)
+            raise AppException("Non è stato possibile aggiungere lo stato al pacco",404)
         
         return True
         
+def set_inactive(package_id):
+    with get_session() as session:
+        
+        is_inactive = package_repository.set_inactive(session,package_id)
 
+        if is_inactive is False:
+            raise AppException("Pacco non trovato!",404)
+        
+        return True
+       
 def _validate_data(package_data):
 
     for field in ["id","sender_name","sender_surname","sender_cap","receiver_name","receiver_surname","receiver_cap","estimated_arrival_date"]:

@@ -23,7 +23,6 @@ def get_available_couriers():
     with get_session() as session:
         return courier_repository.get_available_couriers(session)
 
-
 def create(courier_data):
     _validate_data(courier_data)
 

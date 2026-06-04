@@ -41,7 +41,7 @@ def delete_by_id(package_id):
     except AppException as e:
         return jsonify(e.to_dict()),e.status
     
-@package_bp.route("/packages/<package_id>", methods = ["PATCH"])
+@package_bp.route("/packages/<package_id>/add_status", methods = ["POST"])
 def add_status(package_id):
     
     try:
@@ -50,5 +50,14 @@ def add_status(package_id):
         return jsonify({"message":f"Lo stato {status_id["status_id"]} è stato aggiunto correttamente","status":200})
     
     except AppException as e:
-        return jsonify(e.to_dict()),e.status  
-            
+        return jsonify(e.to_dict()),e.status
+    
+@package_bp.route("/packages/<package_id>/set_inactive", methods = ["PATCH"])
+def set_inactive(package_id):
+    
+    try:
+        package_service.set_inactive(package_id)
+        return jsonify({"message":f"Il pacco {package_id} è stato reso inattivo","status":200})       
+
+    except AppException as e:
+        return jsonify(e.to_dict()),e.status
