@@ -3,7 +3,7 @@ from repository import account_repository, admin_repository
 from exception.app_exception import AppException
 from model.admin_model import Admin
 import re
-
+import bcrypt
 
 def get_by_id(admin_id):
     with get_session() as session:
@@ -18,13 +18,17 @@ def get_by_id(admin_id):
 def create(admin_data):
     _validate_data(admin_data)
 
+    password_hash = bcrypt.hashpw(
+        admin_data["password"].encode("utf-8"), bcrypt.gensalt()
+    ).decode("utf-8")
+
     with get_session() as session:
 
         admin = Admin(
             name = admin_data["name"],
             surname = admin_data["surname"],
             email = admin_data["email"],
-            password = admin_data["password"]
+            password = password_hash
         )
 
         if account_repository.check_used_email(session,admin) is not None:

@@ -28,7 +28,6 @@ class Courier(Account):
             "name": self.name,
             "surname": self.surname,
             "email": self.email,
-            "password": self.password,
             "phone_number": self.phone_number,
             "max_load": self.max_load,
             "birth_date": self.birth_date

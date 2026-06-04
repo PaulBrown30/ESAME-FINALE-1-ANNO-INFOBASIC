@@ -3,7 +3,7 @@ from repository import account_repository, courier_repository
 from exception.app_exception import AppException
 from model.courier_model import Courier
 import re
-
+import bcrypt
 
 def get_by_id(courier_id):
     with get_session() as session:
@@ -26,13 +26,17 @@ def get_available_couriers():
 def create(courier_data):
     _validate_data(courier_data)
 
+    password_hash = bcrypt.hashpw(
+        courier_data["password"].encode("utf-8"), bcrypt.gensalt()
+    ).decode("utf-8")
+
     with get_session() as session:
 
         courier = Courier(
             name = courier_data["name"],
             surname = courier_data["surname"],
             email = courier_data["email"],
-            password = courier_data["password"],
+            password = password_hash,
             phone_number = courier_data["phone_number"],
             max_load = courier_data["max_load"],
             birth_date = courier_data["birth_date"]
@@ -49,14 +53,17 @@ def create(courier_data):
 def update(courier_id,courier_data):
     _validate_data(courier_data)
 
-    with get_session() as session:
+    password_hash = bcrypt.hashpw(
+        courier_data["password"].encode("utf-8"), bcrypt.gensalt()
+    ).decode("utf-8")
 
+    with get_session() as session:
         courier = Courier(
             id = courier_id,
             name = courier_data["name"],
             surname = courier_data["surname"],
             email = courier_data["email"],
-            password = courier_data["password"],
+            password = password_hash,
             phone_number = courier_data["phone_number"],
             max_load = courier_data["max_load"],
             birth_date = courier_data["birth_date"]

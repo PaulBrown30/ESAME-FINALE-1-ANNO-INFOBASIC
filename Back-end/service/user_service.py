@@ -3,7 +3,7 @@ from repository import account_repository, user_repository
 from exception.app_exception import AppException
 from model.user_model import User
 import re
-
+import bcrypt
 
 def get_by_id(user_id):
     with get_session() as session:
@@ -18,13 +18,17 @@ def get_by_id(user_id):
 def create(user_data):
     _validate_data(user_data)
 
+    password_hash = bcrypt.hashpw(
+        user_data["password"].encode("utf-8"), bcrypt.gensalt()
+    ).decode("utf-8")
+
     with get_session() as session:
 
         user = User(
             name = user_data["name"],
             surname = user_data["surname"],
             email = user_data["email"],
-            password = user_data["password"]
+            password = password_hash
         )
 
         if account_repository.check_used_email(session,user) is not None:

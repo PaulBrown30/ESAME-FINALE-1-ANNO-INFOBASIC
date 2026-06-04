@@ -8,7 +8,7 @@ class Account(Base):
     name = Column(String(30), nullable= False)
     surname = Column(String(30), nullable= False)
     email = Column(String(30), nullable= False, unique= True)
-    password =Column(String(30), nullable= False)
+    password =Column(String(255), nullable= False)
     account_type = Column(String(30), nullable= False)
 
     __mapper_args__ = {
