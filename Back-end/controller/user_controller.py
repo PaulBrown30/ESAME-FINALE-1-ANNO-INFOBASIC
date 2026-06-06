@@ -14,7 +14,7 @@ def get_by_id(user_id):
     except AppException as e:
         return jsonify(e.to_dict()),e.status
     
-@user_bp.route("/users/create",methods = ["POST"])
+@user_bp.route("/users/register",methods = ["POST"])
 def create():
     try:
         dati_user = request.get_json()
@@ -28,9 +28,9 @@ def create():
 def add_package(user_id):
     
     try:
-        package_id = request.get_json()
+        package_id = request.get_json()["package_id"]
         user_service.add_package(user_id,package_id)
-        return jsonify({"message":f"Il pacco {package_id["package_id"]} è stato aggiunto correttamente","status":200})
+        return jsonify({"message":f"Il pacco {package_id} è stato aggiunto correttamente","status":200})
     
     except AppException as e:
         return jsonify(e.to_dict()),e.status  

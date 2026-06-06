@@ -54,7 +54,7 @@ def delete_by_id(package_id):
 def add_status(package_id,status_id):
     with get_session() as session:
 
-        is_status_added = package_repository.add_status(session,package_id,status_id["status_id"])
+        is_status_added = package_repository.add_status(session,package_id,status_id)
     
         if is_status_added is False:
             raise AppException("Non è stato possibile aggiungere lo stato al pacco",404)

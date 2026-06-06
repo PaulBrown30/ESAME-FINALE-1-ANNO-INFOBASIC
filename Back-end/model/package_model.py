@@ -16,7 +16,7 @@ package_status = Table(
     Base.metadata,
     Column("package_id", String(10), ForeignKey("package.id"), primary_key=True),
     Column("status_id", String(10), ForeignKey("status.id"), primary_key=True),
-    Column("datetime",DateTime, default= datetime.datetime.now(), nullable= False)
+    Column("datetime",DateTime, default= datetime.datetime.now, nullable= False)
     )
 
 
@@ -70,6 +70,7 @@ class Package(Base):
             "receiver_surname": self.receiver_surname,
             "receiver_cap": self.receiver_cap,
             "estimated_arrival_date": self.estimated_arrival_date,
+            "statuses": [s.to_dict() for s in self.statuses]
         }
 
 

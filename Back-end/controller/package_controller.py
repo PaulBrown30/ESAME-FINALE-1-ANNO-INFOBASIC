@@ -45,9 +45,9 @@ def delete_by_id(package_id):
 def add_status(package_id):
     
     try:
-        status_id = request.get_json()
+        status_id = request.get_json()["status_id"]
         package_service.add_status(package_id,status_id)
-        return jsonify({"message":f"Lo stato {status_id["status_id"]} è stato aggiunto correttamente","status":200})
+        return jsonify({"message":f"Lo stato {status_id} è stato aggiunto correttamente","status":200})
     
     except AppException as e:
         return jsonify(e.to_dict()),e.status
