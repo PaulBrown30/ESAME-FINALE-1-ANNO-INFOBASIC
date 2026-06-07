@@ -14,6 +14,7 @@ import { ContactPage } from "./pages/contact-page.js";
 import { LoginPage } from "./pages/login-page.js";
 import { RegisterPage } from "./pages/register-page.js";
 import { NotFoundPage } from "./pages/not-found-page.js";
+import { UserPage } from "./pages/user-page.js";
 
 applyTheme(readStoredTheme());
 
@@ -28,6 +29,7 @@ const router = defineRoutes([
   {path: "/contattaci", element: ContactPage},
   {path: "/register", element: RegisterPage},
   {path: "/login", element: LoginPage},
+  {path: "/users/:user_id", element: UserPage},
   {path: "*", element: NotFoundPage},
 ])
 

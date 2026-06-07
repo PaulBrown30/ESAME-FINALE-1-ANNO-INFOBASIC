@@ -1,10 +1,11 @@
 from model.user_model import User
 from model.package_model import Package
 from sqlalchemy import select,not_
+from sqlalchemy.orm import joinedload,selectinload
 
 
 def get_by_id(session,user_id):
-    return session.get(User,user_id)
+    return session.execute(select(User).where(User.id == user_id).options(selectinload(User.packages).selectinload(Package.statuses))).unique().scalar_one_or_none()
 
 def create(session,user):
     session.add(user)
@@ -25,4 +26,6 @@ def add_package(session,user_id,package_id):
     user.packages.append(package)
     session.commit()
     return True
+
+
 

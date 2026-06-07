@@ -80,7 +80,7 @@ def create_samples():
         "id": "1234567891",
         "price": 76.55,
         "weight": 76.55,
-        "sender_name": "Bruno",
+        "sender_name": "Brunoooooooooooooooooo",
         "sender_surname": "Marrone",
         "sender_cap": "65124",
         "receiver_name": "Gianni",
@@ -92,3 +92,6 @@ def create_samples():
 
     package_service.add_status("1234567891","S-002")
     package_service.add_status("1234567891","S-003")
+
+    user_service.add_package(4,"1234567890")
+    user_service.add_package(4,"1234567891")

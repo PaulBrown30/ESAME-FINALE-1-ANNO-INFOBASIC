@@ -23,6 +23,10 @@ export function LoginPage() {
         .then(async (res)=> {
             const data = await res.json()
             console.log(data)
+            if (res.ok) {
+                localStorage.setItem("token",data.token)
+                location.pathname = `/${data.account.type}s/${data.account.id}`
+            }
         })
         .catch((err)=> {
             console.log(err)

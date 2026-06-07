@@ -27,11 +27,10 @@ class Account(Base):
         
         return other.id == self.id
 
-    def to_dict(self):
+    def to_dict_login(self):
         return {
             "id": self.id,
             "name": self.name,
             "surname": self.surname,
-            "email": self.email,
             "type": self.account_type
         }

@@ -11,7 +11,7 @@ def login():
     try:
         login_data = request.get_json()
         token, account = auth_service.login(login_data)
-        return jsonify({"token": token, "account": account.to_dict()})
+        return jsonify({"token": token, "account": account.to_dict_login()})
 
     except AppException as e:
         return jsonify(e.to_dict()),e.status

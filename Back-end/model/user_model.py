@@ -27,6 +27,7 @@ class User(Account):
             "id": self.id,
             "name": self.name,
             "surname": self.surname,
-            "email": self.email,
-            "type": self.account_type
+            "type": self.account_type,
+            "packages": [p.to_dict() for p in self.packages]
         }
+    
