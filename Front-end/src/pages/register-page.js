@@ -3,19 +3,22 @@ import { createRef } from "just-dom"
 import { createSignal } from "@just-dom/signals"
 import { effect } from "@just-dom/signals"
 
-export function LoginPage() {
+export function RegisterPage() {
 
     const passwordInputRef = createRef();
     const [PasswordVisible, SetPasswordVisible] = createSignal(false);
     const [Loading,SetLoading] = createSignal(false);
+    const [EmailError, SetEmailError] = createSignal(false);
 
     const HandleSubmit = async (e) => {
         SetLoading(true)
+        SetEmailError(false)
         e.preventDefault()
+
         const dataform = new FormData(e.target)
         const data = Object.fromEntries(dataform)
         console.log(data)
-        fetch(`http://127.0.0.1:5000/api/login`,
+        fetch(`http://127.0.0.1:5000/api/users/create`,
             {method: "POST",
             body: JSON.stringify(data),
             headers: {"Content-Type": "application/json"}
@@ -23,9 +26,13 @@ export function LoginPage() {
         .then(async (res)=> {
             const data = await res.json()
             console.log(data)
+            if(!res.ok) {
+                SetEmailError(true)            
+            }
         })
         .catch((err)=> {
             console.log(err)
+            SetEmailError(true)
         })
         .finally(() => {
             SetLoading(false)
@@ -39,7 +46,41 @@ export function LoginPage() {
             onsubmit: HandleSubmit
         },[
             jd.div({className: "card-body flex flex-col gap-3"},[
-                jd.p({className: "text-2xl"},["Login"]),
+                jd.p({className: "text-2xl"},["Registrazione utente"]),
+                jd.div({},[
+                    jd.label({className: "input validator w-full"},[
+                        jd.lucide("User2",{className:"size-5"}),
+                        jd.input({
+                            placeholder: "Inserisci nome",
+                            id: "name",
+                            name: "name",
+                            type: "text",
+                            minLength: 3,
+                            maxLength: 30,
+                            required: "true"
+                        },[])
+                    ]),
+                    jd.p({className:"validator-hint hidden"},[
+                        "Il Nome deve avere almeno 3 caratteri!"
+                    ]),
+                ]),
+                jd.div({},[
+                    jd.label({className: "input validator w-full"},[
+                        jd.lucide("User2",{className:"size-5"}),
+                        jd.input({
+                            placeholder: "Inserisci cognome",
+                            id: "surname",
+                            name: "surname",
+                            type: "text",
+                            minLength: 3,
+                            maxLength: 30,
+                            required: "true"
+                        },[])
+                    ]),
+                    jd.p({className:"validator-hint hidden"},[
+                        "Il Cognome deve avere almeno 3 caratteri!"
+                    ]),
+                ]),
                 jd.div({},[
                     jd.label({className: "input validator w-full"},[
                         jd.lucide("Mail",{className:"size-5"}),
@@ -56,7 +97,21 @@ export function LoginPage() {
                     ]),
                     jd.p({className:"validator-hint hidden"},[
                         "Inserisci un email valida"
-                    ])
+                    ]),
+                    jd.div({
+                        className:"flex",
+                        ref: el => {
+                            effect(el,() => {
+                                if (EmailError()) {
+                                    el.replaceChildren(
+                                        jd.p({ className: "px-2 pt-2 text-red-400"},["Email gia utilizzata!"])
+                                    )
+                                } else {
+                                    el.replaceChildren()                                    
+                                }
+                            })
+                        }
+                    },[])
                 ]),
                 jd.div({},[
                     jd.label({className: "input validator w-full"},[
@@ -112,7 +167,7 @@ export function LoginPage() {
                         }
                     })
                 }
-            },["Accedi"])
+            },["Registra"])
         ])
     ])
 }

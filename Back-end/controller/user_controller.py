@@ -14,7 +14,7 @@ def get_by_id(user_id):
     except AppException as e:
         return jsonify(e.to_dict()),e.status
     
-@user_bp.route("/users/register",methods = ["POST"])
+@user_bp.route("/users/create",methods = ["POST"])
 def create():
     try:
         dati_user = request.get_json()

@@ -55,6 +55,13 @@ def create_samples():
         "password": "Password30."
     })
 
+    user_service.create({
+        "name": "test",
+        "surname": "test",
+        "email": "test@gmail.com",
+        "password": "Testsuper30."
+    })
+
     package_service.create({
         "id": "1234567890",
         "price": 76.55,

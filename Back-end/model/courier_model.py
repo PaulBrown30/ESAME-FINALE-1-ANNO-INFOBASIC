@@ -30,5 +30,6 @@ class Courier(Account):
             "email": self.email,
             "phone_number": self.phone_number,
             "max_load": self.max_load,
-            "birth_date": self.birth_date
+            "birth_date": self.birth_date,
+            "type": self.account_type
         }

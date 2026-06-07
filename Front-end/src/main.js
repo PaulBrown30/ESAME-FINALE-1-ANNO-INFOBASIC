@@ -12,6 +12,8 @@ import { navigate } from "@just-dom/router";
 import { HomePage } from "./pages/home-page.js";
 import { ContactPage } from "./pages/contact-page.js";
 import { LoginPage } from "./pages/login-page.js";
+import { RegisterPage } from "./pages/register-page.js";
+import { NotFoundPage } from "./pages/not-found-page.js";
 
 applyTheme(readStoredTheme());
 
@@ -24,7 +26,9 @@ const router = defineRoutes([
   {path: "/", element: () => {location.pathname = "/home" ; return ""}},
   {path: "/home", element: HomePage},
   {path: "/contattaci", element: ContactPage},
-  {path: "/login", element: LoginPage}
+  {path: "/register", element: RegisterPage},
+  {path: "/login", element: LoginPage},
+  {path: "*", element: NotFoundPage},
 ])
 
 

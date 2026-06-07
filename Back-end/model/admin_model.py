@@ -21,5 +21,6 @@ class Admin(Account):
             "id": self.id,
             "name": self.name,
             "surname": self.surname,
-            "email": self.email
+            "email": self.email,
+            "type": self.account_type
         }

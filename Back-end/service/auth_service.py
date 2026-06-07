@@ -15,7 +15,7 @@ def login(access_data):
 
     with get_session() as session:
 
-        account = account_repository.get_by_email(session)
+        account = account_repository.get_by_email(session,access_data)
 
         if account == None:
             raise AppException(f"Credenziali errate!",401)
@@ -34,13 +34,13 @@ def login(access_data):
             "exp": datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(hours=1)
         }
 
-        token = jwt.encode(payload, SECRET_KEY, algorithms = ["HS256"])
+        token = jwt.encode(payload, SECRET_KEY, algorithm = "HS256")
 
         return token,account
     
 def verifica_token(token):
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        payload = jwt.decode(token, SECRET_KEY, algorithm="HS256")
         return payload
     except jwt.ExpiredSignatureError:
         raise AppException("Token scaduto!",401)

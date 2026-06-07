@@ -63,6 +63,6 @@ def _validate_data(user_data):
     if not re.fullmatch(email_pattern,user_data["email"]):
         raise AppException("Email non valida!",400)
     
-    password_pattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$"
+    password_pattern = r"(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])[^ ]{8,}"
     if not re.fullmatch(password_pattern,user_data["password"]):
         raise AppException("Password non valida!",400)          

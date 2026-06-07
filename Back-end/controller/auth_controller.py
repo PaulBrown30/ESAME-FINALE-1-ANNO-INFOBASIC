@@ -3,12 +3,13 @@ from exception.app_exception import AppException
 from service import auth_service
 from functools import wraps
 
-auth_bp = Blueprint("auth", __name__, url_prefix="/api/auth")
+auth_bp = Blueprint("auth", __name__, url_prefix="/api")
 
-@auth_bp.route("/login",)
-def login(login_data):
+@auth_bp.route("/login", methods = ["POST"])
+def login():
 
     try:
+        login_data = request.get_json()
         token, account = auth_service.login(login_data)
         return jsonify({"token": token, "account": account.to_dict()})
 

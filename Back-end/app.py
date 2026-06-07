@@ -6,6 +6,7 @@ from controller.courier_controller import courier_bp
 from controller.package_controller import package_bp
 from controller.status_controller import status_bp
 from controller.user_controller import user_bp
+from controller.auth_controller import auth_bp
 import samples
 
 
@@ -16,6 +17,8 @@ app.register_blueprint(courier_bp)
 app.register_blueprint(package_bp)
 app.register_blueprint(status_bp)
 app.register_blueprint(user_bp)
+app.register_blueprint(auth_bp)
+
 
 CORS(app)
 
