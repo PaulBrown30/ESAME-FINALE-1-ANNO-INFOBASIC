@@ -15,6 +15,7 @@ import { LoginPage } from "./pages/login-page.js";
 import { RegisterPage } from "./pages/register-page.js";
 import { NotFoundPage } from "./pages/not-found-page.js";
 import { UserPage } from "./pages/user-page.js";
+import { CourierPage } from "./pages/courier-page.js";
 
 applyTheme(readStoredTheme());
 
@@ -30,6 +31,7 @@ const router = defineRoutes([
   {path: "/register", element: RegisterPage},
   {path: "/login", element: LoginPage},
   {path: "/users/:user_id", element: UserPage},
+  {path: "/couriers/:courier_id", element: CourierPage},
   {path: "*", element: NotFoundPage},
 ])
 

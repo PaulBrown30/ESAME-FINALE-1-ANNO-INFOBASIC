@@ -89,7 +89,7 @@ export function UserPage() {
                                             el.append(
                                                 jd.div({className: "flex flex-row my-4 gap-4"},[
                                                     jd.div({ className: "flex flex-col px-6 py-3 bg-white rounded-xl "},[
-                                                        jd.p({className: "font-bold"},["Account di:"]),
+                                                        jd.p({className: "font-bold"},["Utente:"]),
                                                         jd.p({
                                                             className:"",
                                                             ref: el => {
@@ -196,10 +196,27 @@ function packageRow({package_data}) {
                     jd.lucide("Van",{className: "size-10" }),
                     jd.p({className: "font-bold"},["In consegna"])
                 ]),
-                jd.div({className: "flex flex-col items-center " + (package_data.statuses.some(dizionario => dizionario.id === "S-003")? " text-amber-400" : "opacity-20")},[
-                    jd.lucide("Home",{className: "size-10"}),
-                    jd.p({className: "font-bold"},["Consegnato"])
-                ])
+                jd.div({
+                    ref: el => {
+                        effect(el,() => {
+                            if (!package_data.statuses.some(dizionario => dizionario.id === "S-101" || dizionario.id === "S-102")) {
+                                el.replaceChildren(
+                                    jd.div({className: "flex flex-col items-center " + (package_data.statuses.some(dizionario => dizionario.id === "S-003")? " text-amber-400" : "opacity-20")},[
+                                        jd.lucide("Home",{className: "size-10"}),
+                                        jd.p({className: "font-bold"},["Consegnato"])
+                                    ])
+                                )
+                            } else {
+                                el.replaceChildren(
+                                    jd.div({className: "flex flex-col items-center text-red-700"},[
+                                        jd.lucide("X",{className: "size-10"}),
+                                        jd.p({className: "font-bold"},[package_data.statuses.some(dizionario => dizionario.id === "S-101")? "Non Consegnato": "Pacco smarrito"])
+                                    ])
+                                )                                                        
+                            }
+                        })
+                    }
+                },[])
             ]),
         ])
     ])

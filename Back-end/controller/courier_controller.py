@@ -1,10 +1,12 @@
 from flask import Blueprint,jsonify,request
 from service import courier_service
 from exception.app_exception import AppException
+from controller.auth_controller import token_required
 
 courier_bp = Blueprint("courier",__name__,url_prefix="/api")
 
 @courier_bp.route("/couriers/<int:courier_id>")
+@token_required
 def get_by_id(courier_id):   
     try:
         courier = courier_service.get_by_id(courier_id)

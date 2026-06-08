@@ -9,6 +9,7 @@ class Courier(Account):
     phone_number = Column(String(10), nullable= False, unique=True)
     max_load = Column(Integer, nullable= False, default = 10)
     birth_date = Column(String(10), nullable= False)
+    current_cap = Column(String(5), nullable= False)
 
     packages = relationship("Package",back_populates="courier")
 
@@ -30,5 +31,7 @@ class Courier(Account):
             "phone_number": self.phone_number,
             "max_load": self.max_load,
             "birth_date": self.birth_date,
-            "type": self.account_type
+            "type": self.account_type,
+            "current_cap": self.current_cap,
+            "packages": [p.to_dict() for p in self.packages]
         }

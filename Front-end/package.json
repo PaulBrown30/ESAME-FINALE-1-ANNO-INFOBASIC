@@ -18,6 +18,8 @@
     "@just-dom/lucide": "^1.1.1",
     "@just-dom/router": "^1.0.0",
     "@just-dom/signals": "^1.1.0",
-    "just-dom": "^2.1.2"
+    "just-dom": "^2.1.2",
+    "leaflet": "^1.9.4",
+    "leaflet-routing-machine": "^3.2.12"
   }
 }

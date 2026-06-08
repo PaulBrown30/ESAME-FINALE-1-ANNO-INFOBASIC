@@ -11,11 +11,12 @@ def create_samples():
     courier_service.create({
         "name": "Paolo",
         "surname": "Marrone",
-        "email": "paolo.marronewdwa5@gmail.com",
-        "password": "Password30.",
+        "email": "test1@gmail.com",
+        "password": "Testsuper31.",
         "phone_number": "3774567865",
         "max_load" : 10,
-        "birth_date": "01/01/42"
+        "birth_date": "01/01/42",
+        "current_cap": "43121"
     })
 
     status_service.create({
@@ -48,6 +49,12 @@ def create_samples():
         "description": "Il pacco è stato smarrito!"
     })
 
+    status_service.create({
+        "id": "S-103",
+        "name": "Pacco Non Ritirato",
+        "description": "Il pacco non è stato ritirato!"
+    })
+
     user_service.create({
         "name": "Paolo",
         "surname": "Marrone",
@@ -63,18 +70,33 @@ def create_samples():
     })
 
     package_service.create({
+        "id": "1234567892",
+        "price": 76.55,
+        "weight": 76.55,
+        "sender_name": "test assegnazione",
+        "sender_surname": "Marrone",
+        "sender_cap": "43121",   # Parma
+        "receiver_name": "Gianni",
+        "receiver_surname": "Celeste",
+        "receiver_cap": "43123",  # Parma (zona diversa)
+        "estimated_arrival_date": "11/11/2026",
+        "courier_id": 2
+    })
+
+    package_service.create({
         "id": "1234567890",
         "price": 76.55,
         "weight": 76.55,
         "sender_name": "Bruno",
         "sender_surname": "Marrone",
-        "sender_cap": "65124",
+        "sender_cap": "10121",   # Torino
         "receiver_name": "Gianni",
         "receiver_surname": "Celeste",
-        "receiver_cap": "65124",
+        "receiver_cap": "65124",  # Pescara (già corretto)
         "estimated_arrival_date": "11/11/2026",
-        "courier_id":2
+        "courier_id": 2
     })
+
 
     package_service.create({
         "id": "1234567891",
@@ -82,32 +104,35 @@ def create_samples():
         "weight": 76.55,
         "sender_name": "Brunoooooooooooooooooo",
         "sender_surname": "Marrone",
-        "sender_cap": "65124",
+        "sender_cap": "20121",   # Milano
         "receiver_name": "Gianni",
         "receiver_surname": "Celeste",
-        "receiver_cap": "65124",
+        "receiver_cap": "35121",  # Padova
         "estimated_arrival_date": "11/11/2026",
-        "courier_id":2
+        "courier_id": 2
     })
 
     package_service.create({
-        "id": "1234567892",
+        "id": "1234567893",
         "price": 76.55,
         "weight": 76.55,
-        "sender_name": "test assegnazione",
+        "sender_name": "test non consegnato",
         "sender_surname": "Marrone",
-        "sender_cap": "65124",
+        "sender_cap": "25121",  
         "receiver_name": "Gianni",
         "receiver_surname": "Celeste",
-        "receiver_cap": "65124",
+        "receiver_cap": "37121", 
         "estimated_arrival_date": "11/11/2026",
-        "courier_id":2
+        "courier_id": 2
     })
+
 
     package_service.add_status("1234567891","S-002")
     package_service.add_status("1234567891","S-003")
 
-    package_service.add_status("1234567892","S-002")
+
+    package_service.add_status("1234567893","S-002")
+    package_service.add_status("1234567893","S-102")
 
     user_service.add_package(4,"1234567890")
     user_service.add_package(4,"1234567891")

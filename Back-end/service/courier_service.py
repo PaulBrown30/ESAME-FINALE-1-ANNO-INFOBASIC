@@ -39,7 +39,8 @@ def create(courier_data):
             password = password_hash,
             phone_number = courier_data["phone_number"],
             max_load = courier_data["max_load"],
-            birth_date = courier_data["birth_date"]
+            birth_date = courier_data["birth_date"],
+            current_cap = courier_data["current_cap"]
         )
 
         if account_repository.check_used_email(session,courier) is not None:
@@ -66,7 +67,8 @@ def update(courier_id,courier_data):
             password = password_hash,
             phone_number = courier_data["phone_number"],
             max_load = courier_data["max_load"],
-            birth_date = courier_data["birth_date"]
+            birth_date = courier_data["birth_date"],
+            current_cap = courier_data["current_cap"]
         )
 
         if account_repository.check_used_email(session,courier) is not None:
@@ -88,7 +90,7 @@ def delete_by_id(courier_id):
         return True
 
 def _validate_data(courier_data):
-    for field in ["name","surname","email","password","phone_number","birth_date"]:
+    for field in ["name","surname","email","password","phone_number","birth_date","current_cap"]:
         if field not in courier_data:
             raise AppException(f"Il campo {field} non è presente",400)
         if courier_data.get(field) is None or len(courier_data[field].strip()) == 0 or len(courier_data[field]) > 30:
@@ -120,7 +122,8 @@ def _validate_data(courier_data):
     if len(courier_data["birth_date"]) > 10:
         raise AppException("La data di nascita deve avere meno di 10 caratteri",400)
     
-
+    if len(courier_data["current_cap"]) != 5:
+        raise AppException("Il Cap corrente deve avere 5 caratteri",400)
 
 
     

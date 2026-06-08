@@ -79,10 +79,28 @@ export function HomePage() {
                                            jd.lucide("Van",{className: "size-10" }),
                                            jd.p({className: "font-bold"},["In consegna"])
                                         ]),
-                                        jd.div({className: "flex flex-col items-center " + (PackageData().statuses.some(dizionario => dizionario.id === "S-003")? " text-amber-400" : "opacity-20")},[
-                                           jd.lucide("Home",{className: "size-10"}),
-                                           jd.p({className: "font-bold"},["Consegnato"])
-                                        ])
+                                        jd.div({
+                                            ref: el => {
+                                                effect(el,() => {
+                                                    if (!PackageData().statuses.some(dizionario => dizionario.id === "S-101" || dizionario.id === "S-102")) {
+                                                        el.replaceChildren(
+                                                            jd.div({className: "flex flex-col items-center " + (PackageData().statuses.some(dizionario => dizionario.id === "S-003")? " text-amber-400" : "opacity-20")},[
+                                                                jd.lucide("Home",{className: "size-10"}),
+                                                                jd.p({className: "font-bold"},["Consegnato"])
+                                                            ])
+                                                        )
+                                                    } else {
+                                                        el.replaceChildren(
+                                                            jd.div({className: "flex flex-col items-center text-red-700"},[
+                                                                jd.lucide("X",{className: "size-10"}),
+                                                                jd.p({className: "font-bold"},[PackageData().statuses.some(dizionario => dizionario.id === "S-101")? "Non Consegnato": "Pacco smarrito"])
+                                                            ])
+                                                        )                                                        
+                                                    }
+                                                })
+                                            }
+                                        },[])
+
                                     ]),
                                     jd.div({className: "flex flex-row w-full justify-between rounded-2xl bg-white shadow-lg py-3 px-4 mb-5"},[
                                         jd.div({className: "flex flex-col h-full"},[
