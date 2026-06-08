@@ -40,12 +40,16 @@ def create(user_data):
 def add_package(user_id,package_id):
     with get_session() as session:
 
-        is_package_added = user_repository.add_package(session,user_id,package_id)
-    
-        if is_package_added is False:
-            raise AppException("Non è stato possibile aggiungere il pacco all'utente",404)
+        package_added = user_repository.add_package(session,user_id,package_id)
+
+        if package_added is 0:
+            raise AppException("Non è stato trovato nessun utente",404)    
+        if package_added is 1:
+            raise AppException("Non è stato trovato il pacco da assegnare",404)
+        if package_added is 2:
+            raise AppException("Il pacco è gia assegnato all'utente!",404)      
         
-        return True
+        return package_added
     
 
 def _validate_data(user_data):

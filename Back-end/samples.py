@@ -90,8 +90,24 @@ def create_samples():
         "courier_id":2
     })
 
+    package_service.create({
+        "id": "1234567892",
+        "price": 76.55,
+        "weight": 76.55,
+        "sender_name": "test assegnazione",
+        "sender_surname": "Marrone",
+        "sender_cap": "65124",
+        "receiver_name": "Gianni",
+        "receiver_surname": "Celeste",
+        "receiver_cap": "65124",
+        "estimated_arrival_date": "11/11/2026",
+        "courier_id":2
+    })
+
     package_service.add_status("1234567891","S-002")
     package_service.add_status("1234567891","S-003")
+
+    package_service.add_status("1234567892","S-002")
 
     user_service.add_package(4,"1234567890")
     user_service.add_package(4,"1234567891")

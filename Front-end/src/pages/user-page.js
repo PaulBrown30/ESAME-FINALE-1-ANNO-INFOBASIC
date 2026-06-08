@@ -2,6 +2,8 @@ import { AccountHeader } from "../components/accounts-header"
 import { jd } from "../jd.config"
 import { createSignal } from "@just-dom/signals"
 import { effect } from "@just-dom/signals"
+import { createRef } from "just-dom"
+import { NoAccess } from "../components/no-access"
 
 export function UserPage() {
 
@@ -9,9 +11,22 @@ export function UserPage() {
     console.log(user_id)
 
     const [UserPackages, SetUserPackages] = createSignal([])
-    const [loading, SetLoading] = createSignal(false)
+    const [UserData, SetUserData] = createSignal()
+    const [Loading, SetLoading] = createSignal(false)
+    const [Searched, SetSearched] = createSignal(false)
+    const inputRef = createRef()
 
-    fetch(`http://127.0.0.1:5000/api/users/${user_id}`)
+    const token = localStorage.getItem("token")
+
+    fetch(`http://127.0.0.1:5000/api/users/${user_id}`,
+        {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        }
+    )
     .then(async (res) => {
         SetLoading(true)
         const user_data = await res.json()
@@ -19,6 +34,7 @@ export function UserPage() {
         const packages = user_data.packages
         console.log(packages)
         if (res.ok) {
+            SetUserData(user_data)
             SetUserPackages(packages)
         }
     })
@@ -29,27 +45,117 @@ export function UserPage() {
         SetLoading(false)
     })
 
+    function HandleTracking (package_code) {
+        console.log(package_code)
+        SetLoading(true)
+        fetch(`http://127.0.0.1:5000/api/users/${user_id}/add_package`,
+            {method: "POST",
+            body: JSON.stringify({"package_id":package_code}),
+            headers: {"Content-Type": "application/json"}}
+        )
+        .then(async res => {
+            const package_data = await res.json()
+            console.log(package_data)
+            if (res.ok){
+                SetSearched("ok")
+                SetUserPackages([...UserPackages(),package_data])
+            } else {
+                SetSearched("not-ok")
+                SetUserPackages(UserPackages())
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
+        .finally(() => {
+            SetLoading(false)
+        })
+    }
+
     return jd.div({},[
         jd.table({
             className: "flex flex-col w-full h-screen bg-amber-200",
             ref: el => {
                 effect(el,() => {
-                    el.replaceChildren(
-                        AccountHeader(),
-                        jd.tbody({
-                            className: "container self-center mt-4",
-                            ref: el => {
-                                effect(el, () => {
-                                    if (!loading()) {
-                                        el.innerHTML = ""
-                                        el.append(...UserPackages().map(package_data => packageRow({package_data})))
-                                    } else {
-                                        jd.lucide("Loader2",{className: "animate-spin size-10"} )
-                                    }
-                                })
-                            }
-                        },[])
-                    )
+                    if (UserData()){
+                        el.replaceChildren(
+                            AccountHeader(),
+                            jd.tbody({
+                                className: "container self-center mt-4",
+                                ref: el => {
+                                    effect(el, () => {
+                                        if (!Loading()) {
+                                            el.innerHTML = ""
+                                            el.append(
+                                                jd.div({className: "flex flex-row my-4 gap-4"},[
+                                                    jd.div({ className: "flex flex-col px-6 py-3 bg-white rounded-xl "},[
+                                                        jd.p({className: "font-bold"},["Account di:"]),
+                                                        jd.p({
+                                                            className:"",
+                                                            ref: el => {
+                                                                effect(el,() => {
+                                                                    if (UserData()) {
+                                                                        el.textContent = `${UserData().name} ${UserData().surname}`                                                             
+                                                                    }
+                                                                })
+                                                            }
+                                                        })
+                                                    ]),
+                                                    jd.label({className: "flex flex-row bg-white items-center h-20 input align-bottom outline-0 w-100"},[
+                                                        jd.div({
+                                                            ref: (el) => {
+                                                                effect((el),() => {
+                                                                    if (!Loading()) {
+                                                                        el.replaceChildren(jd.lucide("Package",{className: "size-8"}))
+                                                                    } else {
+                                                                        el.replaceChildren(jd.lucide("Package",{className: "size-8 animate-spin"}))
+                                                                    }
+                                                                })
+                                                            }
+                                                        },[                        
+                                                        ]),
+                                                        jd.input({
+                                                            className: " h-10 p-2",
+                                                            placeholder:"Inserisci il codice...",
+                                                            maxLength: 10,
+                                                            ref: inputRef
+                                                        },[]),
+                                                        jd.button({
+                                                            className: "btn btn-lg bg-amber-400 text-white",
+                                                            onclick:() => {HandleTracking(inputRef.current.value)}
+                                                        },["Aggiungi"])
+                                                    ]),
+                                                    jd.div({
+                                                        className:"",
+                                                        ref: el => {
+                                                            effect(el,() => {
+                                                                if (!Searched()) {
+                                                                    el.replaceChildren()
+                                                                } else {
+                                                                    el.replaceChildren(
+                                                                        jd.div({className: "flex flex-row bg-white items-center h-20 w-100 rounded-lg p-4 shadow-md"},[
+                                                                            jd.p({className: Searched() == "ok"? "text-2xl text-green-500 font-bold": "text-2xl text-red-500 font-bold" },[
+                                                                                Searched() == "ok"? "Pacco aggiunto": "Pacco non aggiunto"
+                                                                            ])
+                                                                        ])
+                                                                    )
+                                                                }
+                                                            })
+                                                        }
+                                                    },[])                                         
+                                                ])
+                                            );
+                                            el.append(...UserPackages().map(package_data => packageRow({package_data})))
+                                        } else {
+                                            jd.lucide("Loader2",{className: "animate-spin size-10"} )
+                                        }
+                                    })
+                                }
+                            },[])
+                        )
+                    } else {
+                        el.replaceChildren(NoAccess())
+                    }
                 })
             }
         },[])
@@ -58,6 +164,10 @@ export function UserPage() {
 
 function packageRow({package_data}) {
     return jd.tr({className: "mt-4 shadow-xl bg-amber-100 rounded-2xl border-2 m-2 mx-6 gap-3 "},[
+        jd.td({className: "p-4 px-6 border-l-2 align-top"},[
+            jd.p({className: "font-bold "},["Codice"]),
+            jd.p({},[`${package_data.id}`])
+        ]),
         jd.td({className: "p-4 px-6 border-l-2 align-top"},[
             jd.p({className: "font-bold "},["Mittente"]),
             jd.p({},[`${package_data.sender_name} ${package_data.sender_surname}`]),

@@ -1,10 +1,12 @@
 from flask import Blueprint,jsonify,request
 from service import user_service
 from exception.app_exception import AppException
+from controller.auth_controller import token_required
 
 user_bp = Blueprint("user",__name__,url_prefix="/api")
 
 @user_bp.route("/users/<int:user_id>")
+@token_required
 def get_by_id(user_id):
     
     try:
@@ -29,8 +31,8 @@ def add_package(user_id):
     
     try:
         package_id = request.get_json()["package_id"]
-        user_service.add_package(user_id,package_id)
-        return jsonify({"message":f"Il pacco {package_id} è stato aggiunto correttamente","status":200})
+        package_added = user_service.add_package(user_id,package_id)
+        return jsonify(package_added.to_dict()),200
     
     except AppException as e:
         return jsonify(e.to_dict()),e.status  

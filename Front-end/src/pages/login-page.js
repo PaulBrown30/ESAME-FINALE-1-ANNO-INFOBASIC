@@ -18,8 +18,8 @@ export function LoginPage() {
         fetch(`http://127.0.0.1:5000/api/login`,
             {method: "POST",
             body: JSON.stringify(data),
-            headers: {"Content-Type": "application/json"}
-        })
+            headers: {"Content-Type": "application/json"}}
+        )
         .then(async (res)=> {
             const data = await res.json()
             console.log(data)

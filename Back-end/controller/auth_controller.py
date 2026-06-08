@@ -36,6 +36,13 @@ def token_required(f):
             g.id = payload["id"]
             g.email = payload["email"]
             g.account_type = payload["account_type"]
+  
+            id_key = kwargs[f"{payload["account_type"]}_id"]
+            print(id_key)
+
+            if str(g.id) != str(id_key):
+                return jsonify({"error": "Accesso negato! Non sei autorizzato a vedere questa risorsa."}), 403
+
 
         except ValueError as e:
             return jsonify({"error": str(e)}), 401

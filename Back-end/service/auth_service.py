@@ -40,7 +40,7 @@ def login(access_data):
     
 def verifica_token(token):
     try:
-        payload = jwt.decode(token, SECRET_KEY, algorithm="HS256")
+        payload = jwt.decode(token, SECRET_KEY, algorithms =["HS256"])
         return payload
     except jwt.ExpiredSignatureError:
         raise AppException("Token scaduto!",401)

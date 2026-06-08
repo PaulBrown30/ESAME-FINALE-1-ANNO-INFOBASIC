@@ -38,7 +38,7 @@ export function HomePage() {
         jd.div({className: "flex relative justify-center"},[
             jd.img({className: "h-200 w-full object-cover object-top",src:"./assets/homepage.png"},[]),
             jd.div({className:"flex flex-col absolute z-10 top-48 gap-4"},[
-                jd.div({ className: "flex px-6 py-3 bg-amber-400 rounded-xl"},[
+                jd.div({ className: "flex px-6 py-3 bg-gray-900 rounded-xl"},[
                     jd.p({className: "text-2xl text-white font-bold"},["TRACCIA IL TUO PACCO"])
                 ]),
                 jd.label({className: "flex flex-row bg-white items-center h-20 input align-bottom outline-0 w-150"},[
@@ -61,7 +61,7 @@ export function HomePage() {
                         ref: inputRef
                     },[]),
                     jd.button({
-                        className: "btn btn-lg bg-gray-900 text-white",
+                        className: "btn btn-lg bg-amber-400 text-white",
                         onclick:() => {HandleTracking(inputRef.current.value)}
                     },["Traccia"])
                 ]),
