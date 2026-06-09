@@ -1,5 +1,6 @@
 from repository import package_repository
 from model.package_model import Package
+from service import courier_service
 from persistence.db_config import get_session
 from exception.app_exception import AppException
 
@@ -51,15 +52,28 @@ def delete_by_id(package_id):
         
         return True
 
-def add_status(package_id,status_id):
+def add_status(package_id,status_id,courier_id):
     with get_session() as session:
 
-        is_status_added = package_repository.add_status(session,package_id,status_id)
+        package = package_repository.add_status(session,package_id,status_id)
     
-        if is_status_added is False:
-            raise AppException("Non è stato possibile aggiungere lo stato al pacco",404)
+        if package is 1:
+            raise AppException("Non è stato possibile trovare il pacco",404)
         
-        return True
+        if package is 2:
+            raise AppException("Non è stato possibile trovare lo stato",404)
+        
+        if status_id in ["S-003","S-101","S-102","S-103"]:
+            set_inactive(package_id)
+
+        if status_id in ["S-002","S-103"]  :          
+            courier = courier_service.update_current_cap(courier_id,package.sender_cap)
+        elif status_id in ["S-003","S-101"] :          
+            courier = courier_service.update_current_cap(courier_id,package.receiver_cap)  
+        else:
+            courier = courier_service.update_current_cap(courier_id,None) 
+
+        return courier
         
 def set_inactive(package_id):
     with get_session() as session:

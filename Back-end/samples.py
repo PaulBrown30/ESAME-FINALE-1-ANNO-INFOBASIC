@@ -127,12 +127,12 @@ def create_samples():
     })
 
 
-    package_service.add_status("1234567891","S-002")
-    package_service.add_status("1234567891","S-003")
+    package_service.add_status("1234567891","S-002",2)
+    package_service.add_status("1234567891","S-003",2)
 
 
-    package_service.add_status("1234567893","S-002")
-    package_service.add_status("1234567893","S-102")
+    package_service.add_status("1234567893","S-002",2)
+    package_service.add_status("1234567893","S-102",2)
 
     user_service.add_package(4,"1234567890")
     user_service.add_package(4,"1234567891")

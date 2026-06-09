@@ -79,6 +79,33 @@ def update(courier_id,courier_data):
         
         return courier_repository.update(session,courier)
     
+def update_current_cap(courier_id,current_cap):
+    with get_session() as session:
+        
+        if current_cap != None:
+
+            if len(current_cap) != 5:
+                raise AppException("Il Cap corrente deve avere 5 caratteri",400)
+            try:
+                conversione = int(current_cap)
+            except:
+                raise AppException("Il Cap corrente deve essre numerico",400)
+
+        courier = courier_repository.get_by_id(session,courier_id)
+
+        if courier is None:
+            raise AppException("Nessun corriere trovato",404)
+        
+        if current_cap != None:
+            courier.current_cap = current_cap
+
+        return courier_repository.update(session,courier)
+
+
+
+        
+
+        
 def delete_by_id(courier_id):
     with get_session() as session:
 
@@ -88,6 +115,8 @@ def delete_by_id(courier_id):
             raise AppException("Corriere non trovato!",404)
         
         return True
+    
+        
 
 def _validate_data(courier_data):
     for field in ["name","surname","email","password","phone_number","birth_date","current_cap"]:
@@ -124,6 +153,11 @@ def _validate_data(courier_data):
     
     if len(courier_data["current_cap"]) != 5:
         raise AppException("Il Cap corrente deve avere 5 caratteri",400)
+    
+    try:
+        conversione = int(courier_data["current_cap"])
+    except:
+        raise AppException("Il Cap corrente deve essre numerico",400)
 
 
     

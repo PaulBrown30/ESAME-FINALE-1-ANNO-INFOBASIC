@@ -160,7 +160,6 @@ export function CourierPage() {
     const [CourierPackages, SetCourierPackages] = createSignal([])
     const [CourierData, SetCourierData] = createSignal()
     const [Loading, SetLoading] = createSignal(false)
-    const [Searched, SetSearched] = createSignal(false)
     const inputRef = createRef()
 
     const token = localStorage.getItem("token")
@@ -188,34 +187,20 @@ export function CourierPage() {
         SetLoading(true)
         fetch(`http://127.0.0.1:5000/api/packages/${CourierPackages()[0].id}/add_status`, {
             method: "POST",
-            body: JSON.stringify({ "status_id": status_id }),
+            body: JSON.stringify({ "status_id": status_id, "courier_id": parseInt(courier_id) }),
             headers: { "Content-Type": "application/json" },
         })
-        .then((res) => {
-            if (res.ok) {
-                fetch(`http://127.0.0.1:5000/api/couriers/${courier_id}`, {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                })
-                .then(async (res) => {
-                    SetLoading(true)
-                    const courier_data = await res.json()
-                    const packages = courier_data.packages
-                    if (res.ok) {
-                        SetCourierData(courier_data)
-                        SetCourierPackages(packages)
-                    }
-                })
-                .catch((err) => console.log(err))
-                .finally(() => SetLoading(false))
-            }
+        .then(async (res) => {
+        SetLoading(true)
+        const courier_data = await res.json()
+        const packages = courier_data.packages
+        if (res.ok) {
+            SetCourierData(courier_data)
+            SetCourierPackages(packages)
         }
-        )
-        .catch((err) => console.log(err))
-        .finally(() => SetLoading(false))
+    })
+    .catch((err) => console.log(err))
+    .finally(() => SetLoading(false))
 
     }
 
@@ -245,7 +230,7 @@ export function CourierPage() {
                                                             ref: (el) => {
                                                                 effect(el, () => {
                                                                     if (CourierData()) {
-                                                                        el.textContent = `${CourierData().name} ${CourierData().surname}`
+                                                                        el.textContent = `${CourierData().name} ${CourierData().surname} / Cap  ${CourierData().current_cap}`
                                                                     }
                                                                 })
                                                             },
@@ -254,20 +239,20 @@ export function CourierPage() {
                                                             className:"",
                                                             ref: el => {
                                                                 effect(el, ()=> {
-                                                                    if (CourierPackages()) {
+                                                                    if (CourierPackages()[0]) {
                                                                         el.replaceChildren(
                                                                             jd.div({className: "flex flex-col py-3 border-t gap-2"},[
                                                                                 jd.p({},[`Cambia stato del pacco ${CourierPackages()[0].id}:`]),
                                                                                 jd.button({className: "btn bg-amber-400 text-white "+ (CourierPackages()[0].statuses.some(s => s.id == "S-002")? "hidden":""),
                                                                                     onclick: () => {HandleAddStatus("S-002")}
                                                                                   },["Ritirato"]),
-                                                                                jd.button({className: "btn bg-amber-400 text-white "+ (CourierPackages()[0].statuses.some(s => s.id == "S-001")? "hidden":""),
+                                                                                jd.button({className: "btn bg-amber-400 text-white "+ (!CourierPackages()[0].statuses.some(s => s.id == "S-002")? "hidden":""),
                                                                                     onclick: () => {HandleAddStatus("S-003")}
                                                                                 },["Consegnato"]),
-                                                                                jd.button({className: "btn bg-red-400 text-white "+ (CourierPackages()[0].statuses.some(s => s.id == "S-001")? "hidden":""),
+                                                                                jd.button({className: "btn bg-red-400 text-white "+ (!CourierPackages()[0].statuses.some(s => s.id == "S-002")? "hidden":""),
                                                                                     onclick: () => {HandleAddStatus("S-101")}
                                                                                 },["Non Consegnato"]),
-                                                                                jd.button({className: "btn bg-red-400 text-white "+ (CourierPackages()[0].statuses.some(s => s.id == "S-001")? "hidden":""),
+                                                                                jd.button({className: "btn bg-red-400 text-white "+ (!CourierPackages()[0].statuses.some(s => s.id == "S-002")? "hidden":""),
                                                                                     onclick: () => {HandleAddStatus("S-102")}
                                                                                 },["Smarrito"]),
                                                                                 jd.button({className: "btn bg-red-400 text-white "+ (CourierPackages()[0].statuses.some(s => s.id == "S-002")? "hidden":""),

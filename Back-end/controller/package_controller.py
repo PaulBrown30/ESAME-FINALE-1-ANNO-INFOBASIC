@@ -46,8 +46,9 @@ def add_status(package_id):
     
     try:
         status_id = request.get_json()["status_id"]
-        package_service.add_status(package_id,status_id)
-        return jsonify({"message":f"Lo stato {status_id} è stato aggiunto correttamente","status":200})
+        courier_id = request.get_json()["courier_id"]
+        courier = package_service.add_status(package_id,status_id,courier_id)
+        return jsonify(courier.to_dict()),200
     
     except AppException as e:
         return jsonify(e.to_dict()),e.status

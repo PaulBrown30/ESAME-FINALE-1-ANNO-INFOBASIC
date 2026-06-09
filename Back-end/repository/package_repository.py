@@ -36,15 +36,16 @@ def add_status(session,package_id,status_id):
     package = session.execute(select(Package).where(Package.id == package_id, not_(Package.statuses.any(Status.id == status_id)))).scalar_one_or_none()
 
     if package == None:
-        return False
+        return 0
     
     status = session.get(Status,status_id)
     if status == None:
-        return False
+        return 1
     
     package.statuses.append(status)
     session.commit()
-    return True
+    session.refresh(package)
+    return package
 
 def set_inactive(session,package_id):
     package = session.get(Package,package_id)
@@ -56,12 +57,6 @@ def set_inactive(session,package_id):
     session.commit()
     session.refresh(package)
     return package
-
-
-
-
-    
-    
 
 def check_used_id(session,package):
     return session.execute(select(Package).where(Package.id == package.id)).scalar_one_or_none()
