@@ -4,8 +4,8 @@ def create_samples():
     admin_service.create({
         "name": "Paolo",
         "surname": "Marrone",
-        "email": "paolo.marrone1@gmail.com",
-        "password": "Password30."
+        "email": "admin@gmail.com",
+        "password": "Admin30."
     }) 
 
     courier_service.create({
@@ -126,6 +126,20 @@ def create_samples():
         "courier_id": 2
     })
 
+    package_service.create({
+        "id": "1234567894",
+        "price": 76.55,
+        "weight": 76.55,
+        "sender_name": "test non consegnato",
+        "sender_surname": "Marrone",
+        "sender_cap": "25121",  
+        "receiver_name": "Gianni",
+        "receiver_surname": "Celeste",
+        "receiver_cap": "37121", 
+        "estimated_arrival_date": "11/11/2026",
+        "courier_id": 2
+    })
+
 
     package_service.add_status("1234567891","S-002",2)
     package_service.add_status("1234567891","S-003",2)
@@ -133,6 +147,8 @@ def create_samples():
 
     package_service.add_status("1234567893","S-002",2)
     package_service.add_status("1234567893","S-102",2)
+
+    package_service.add_status("1234567894","S-103",2)
 
     user_service.add_package(4,"1234567890")
     user_service.add_package(4,"1234567891")

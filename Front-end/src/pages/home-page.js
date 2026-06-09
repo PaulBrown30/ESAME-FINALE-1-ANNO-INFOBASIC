@@ -75,10 +75,27 @@ export function HomePage() {
                                            jd.lucide("PackageCheck",{className: "size-10"}),
                                            jd.p({className: "font-bold"},["Preso in Carico"])
                                         ]),
-                                        jd.div({className: "flex flex-col items-center " + (PackageData().statuses.some(dizionario => dizionario.id === "S-002")? " text-amber-400" : "opacity-20")},[
-                                           jd.lucide("Van",{className: "size-10" }),
-                                           jd.p({className: "font-bold"},["In consegna"])
-                                        ]),
+                                        jd.div({
+                                            ref: el => {
+                                                effect(el,() => {
+                                                    if (!PackageData().statuses.some(dizionario => dizionario.id === "S-103")) {
+                                                        el.replaceChildren(
+                                                            jd.div({className: "flex flex-col items-center " + (PackageData().statuses.some(dizionario => dizionario.id === "S-002")? " text-amber-400" : "opacity-20")},[
+                                                                jd.lucide("Van",{className: "size-10" }),
+                                                                jd.p({className: "font-bold"},["In consegna"])
+                                                            ])
+                                                        )
+                                                    } else {
+                                                        el.replaceChildren(
+                                                            jd.div({className: "flex flex-col items-center text-red-700"},[
+                                                                jd.lucide("X",{className: "size-10"}),
+                                                                jd.p({className: "font-bold"},["Pacco non ritirato"])
+                                                            ])
+                                                        )                                                        
+                                                    }
+                                                })
+                                            }
+                                        },[]),
                                         jd.div({
                                             ref: el => {
                                                 effect(el,() => {

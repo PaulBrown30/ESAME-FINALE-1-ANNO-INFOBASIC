@@ -1,10 +1,12 @@
 from flask import Blueprint,jsonify,request
 from service import admin_service
 from exception.app_exception import AppException
+from controller.auth_controller import token_required
 
 admin_bp = Blueprint("admin",__name__,url_prefix="/api")
 
 @admin_bp.route("/admins/<int:admin_id>")
+@token_required
 def get_by_id(admin_id):
     
     try:

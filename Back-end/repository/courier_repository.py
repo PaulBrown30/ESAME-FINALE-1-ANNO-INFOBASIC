@@ -6,12 +6,12 @@ from sqlalchemy import select,func
 from sqlalchemy.orm import selectinload, with_loader_criteria
 
 def get_by_id(session,courier_id):
-    excluded_statuses = ["S-003","S-101","S-102","S-103"]
     return session.execute(select(Courier).where(Courier.id == courier_id).options(selectinload(Courier.packages)
             .selectinload(Package.statuses),with_loader_criteria(Package,Package.active == True))).unique().scalar_one_or_none()
 
 def get_all(session):
-    return session.execute(select(Courier)).scalars().all()
+    return session.execute(select(Courier).options(selectinload(Courier.packages)
+            .selectinload(Package.statuses),with_loader_criteria(Package,Package.active == True))).unique().scalars().all()
 
 def get_available_couriers(session):
     return session.execute(select(Courier).outerjoin(Courier.packages,Package.active == True).group_by(Courier.id, Account.id).having(func.count(Package.id)< Courier.max_load)).scalars().all()

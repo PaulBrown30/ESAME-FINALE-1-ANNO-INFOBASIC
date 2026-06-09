@@ -1,13 +1,13 @@
 from model.package_model import Package
 from model.status_model import Status
 from sqlalchemy import select, not_
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import selectinload
 
 def get_by_id(session,package_id):
-    return session.execute(select(Package).where(Package.id == package_id).options(joinedload(Package.statuses))).unique().scalar_one_or_none() 
+    return session.execute(select(Package).where(Package.id == package_id).options(selectinload(Package.statuses))).unique().scalar_one_or_none() 
 
 def get_all(session):
-    return session.execute(select(Package)).scalars().all()
+    return session.execute(select(Package).options(selectinload(Package.statuses))).scalars().all()
     
 def create(session,package):
     session.add(package)
