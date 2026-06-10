@@ -122,7 +122,7 @@ def _validate_data(package_data):
         raise AppException(f"Il campo price non puo superare il valore di 1.000.000 ")
     
     if package_data["weight"] >= 1000:
-        raise AppException(f"Il campo weight non puo superare il valore di 10000")
+        raise AppException(f"Il campo weight non puo superare il valore di 1000")
 
     if len(package_data["estimated_arrival_date"]) > 10:
         raise AppException("La data di arrivo stimata deve avere massimo 10 caratteri")

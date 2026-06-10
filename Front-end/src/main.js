@@ -17,7 +17,7 @@ import { NotFoundPage } from "./pages/not-found-page.js";
 import { UserPage } from "./pages/user-page.js";
 import { CourierPage } from "./pages/courier-page.js";
 import { AdminPage } from "./pages/admin-page.js";
-import { AddPackagePage } from "./pages/add-package-page copy.js";
+import { AddPackagePage } from "./pages/add-package-page.js";
 import { AddCourierPage } from "./pages/add-courier-page.js";
 
 applyTheme(readStoredTheme());

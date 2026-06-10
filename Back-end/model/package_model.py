@@ -25,7 +25,7 @@ class Package(Base):
 
     id = Column(String(10), primary_key= True)
     price = Column(Numeric(8,2), nullable= False)
-    weight = Column(Numeric(6,2), nullable= False)
+    weight = Column(Numeric(5,2), nullable= False)
     sender_name = Column(String(30), nullable= False)
     sender_surname = Column(String(30), nullable= False)
     sender_cap = Column(String(5), nullable= False)

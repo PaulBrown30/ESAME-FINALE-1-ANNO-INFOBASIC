@@ -15,7 +15,7 @@ export function AdminPage() {
     const [AdminData, SetAdminData] = createSignal()
     const [Category, SetCategory] = createSignal("packages")
     const [Loading, SetLoading] = createSignal(false)
-    const [Searched, SetSearched] = createSignal(false)
+
     const inputRef = createRef()
 
     const token = localStorage.getItem("token")
@@ -47,9 +47,7 @@ export function AdminPage() {
                 .catch((err) => {
                     console.log(err)
                 })
-                .finally(() => {
-                    SetLoading(false)
-                })
+
             
                 fetch(`http://127.0.0.1:5000/api/couriers`)
                 .then(async (res) => {
@@ -62,9 +60,7 @@ export function AdminPage() {
                 .catch((err) => {
                     console.log(err)
                 })
-                .finally(() => {
-                    SetLoading(false)
-                })
+
 
         }
     })
