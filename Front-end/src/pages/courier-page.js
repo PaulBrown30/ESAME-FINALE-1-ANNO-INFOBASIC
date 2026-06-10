@@ -163,6 +163,7 @@ export function CourierPage() {
     const inputRef = createRef()
 
     const token = localStorage.getItem("token")
+    SetLoading(true)
 
     fetch(`http://127.0.0.1:5000/api/couriers/${courier_id}`, {
         method: "GET",
@@ -172,7 +173,6 @@ export function CourierPage() {
         },
     })
     .then(async (res) => {
-        SetLoading(true)
         const courier_data = await res.json()
         const packages = courier_data.packages
         if (res.ok) {
@@ -191,17 +191,16 @@ export function CourierPage() {
             headers: { "Content-Type": "application/json" },
         })
         .then(async (res) => {
-        SetLoading(true)
-        const courier_data = await res.json()
-        const packages = courier_data.packages
-        if (res.ok) {
-            SetCourierData(courier_data)
-            SetCourierPackages(packages)
-        }
-    })
-    .catch((err) => console.log(err))
-    .finally(() => SetLoading(false))
-
+            SetLoading(true)
+            const courier_data = await res.json()
+            const packages = courier_data.packages
+            if (res.ok) {
+                SetCourierData(courier_data)
+                SetCourierPackages(packages)
+            }
+        })
+        .catch((err) => console.log(err))
+        .finally(() => SetLoading(false))
     }
 
     return jd.div({}, [
@@ -213,7 +212,7 @@ export function CourierPage() {
                         el.replaceChildren(
                             AccountHeader(),
                             jd.tbody({
-                                className: "container self-center mt-4",
+                                className: "container self-center mt-4 overflow-x-auto",
                                 ref: (el) => {
                                     effect(el, () => {
                                         if (!Loading()) {
@@ -291,6 +290,12 @@ export function CourierPage() {
                                     })
                                 },
                             }, [])
+                        )
+                    } else if (Loading()) {
+                        el.replaceChildren(
+                            jd.div({className: "flex h-screen w-screen justify-center items-center"},[
+                                jd.lucide("Loader",{className: "animate-spin size-10"})
+                            ])
                         )
                     } else {
                         el.replaceChildren(NoAccess())

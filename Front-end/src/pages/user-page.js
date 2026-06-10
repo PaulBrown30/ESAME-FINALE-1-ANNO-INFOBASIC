@@ -17,6 +17,7 @@ export function UserPage() {
     const inputRef = createRef()
 
     const token = localStorage.getItem("token")
+    SetLoading(true)
 
     fetch(`http://127.0.0.1:5000/api/users/${user_id}`,
         {
@@ -28,7 +29,6 @@ export function UserPage() {
         }
     )
     .then(async (res) => {
-        SetLoading(true)
         const user_data = await res.json()
         console.log(user_data)
         const packages = user_data.packages
@@ -81,7 +81,7 @@ export function UserPage() {
                         el.replaceChildren(
                             AccountHeader(),
                             jd.tbody({
-                                className: "container self-center mt-4",
+                                className: "container self-center mt-4 overflow-x-auto",
                                 ref: el => {
                                     effect(el, () => {
                                         if (!Loading()) {
@@ -153,6 +153,12 @@ export function UserPage() {
                                 }
                             },[])
                         )
+                    } else if (Loading()) {
+                    el.replaceChildren(
+                        jd.div({className: "flex h-screen w-screen justify-center items-center"},[
+                            jd.lucide("Loader",{className: "animate-spin size-10"})
+                        ])
+                    )
                     } else {
                         el.replaceChildren(NoAccess())
                     }

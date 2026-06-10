@@ -12,13 +12,14 @@ export function AdminPage() {
 
     const [Packages, SetPackages] = createSignal([])
     const [Couriers, SetCouriers] = createSignal([])
-    const [AdminData, SetAdminData] = createSignal([])
+    const [AdminData, SetAdminData] = createSignal()
     const [Category, SetCategory] = createSignal("packages")
     const [Loading, SetLoading] = createSignal(false)
     const [Searched, SetSearched] = createSignal(false)
     const inputRef = createRef()
 
     const token = localStorage.getItem("token")
+    SetLoading(true)
 
     fetch(`http://127.0.0.1:5000/api/admins/${admin_id}`,
         {
@@ -30,7 +31,6 @@ export function AdminPage() {
         }
     )
     .then(async (res) => {
-        SetLoading(true)
         const admin_data = await res.json()
         console.log(admin_data)
         if (res.ok) {
@@ -77,14 +77,14 @@ export function AdminPage() {
 
     return jd.div({},[
         jd.table({
-            className: "flex flex-col w-full h-screen bg-amber-200",
+            className: "flex flex-col h-screen bg-amber-200",
             ref: el => {
                 effect(el,() => {
                     if (AdminData()){
                         el.replaceChildren(
                             AccountHeader(),
                             jd.tbody({
-                                className: "container self-center mt-4",
+                                className: "container self-center mt-4 i overflow-x-auto",
                                 ref: el => {
                                     effect(el, () => {
                                         if (!Loading()) {
@@ -142,6 +142,12 @@ export function AdminPage() {
                                 }
                             },[])
                         )
+                    } else if (Loading()) {
+                    el.replaceChildren(
+                        jd.div({className: "flex h-screen w-screen justify-center items-center"},[
+                            jd.lucide("Loader",{className: "animate-spin size-10"})
+                        ])
+                    )
                     } else {
                         el.replaceChildren(NoAccess())
                     }
