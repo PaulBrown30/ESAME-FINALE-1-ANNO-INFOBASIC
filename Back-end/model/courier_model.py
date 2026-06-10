@@ -9,7 +9,7 @@ class Courier(Account):
     phone_number = Column(String(10), nullable= False, unique=True)
     max_load = Column(Integer, nullable= False, default = 10)
     birth_date = Column(String(10), nullable= False)
-    current_cap = Column(String(5), nullable= False)
+    current_cap = Column(String(5), nullable= False, default= "65124")
 
     packages = relationship("Package",back_populates="courier")
 

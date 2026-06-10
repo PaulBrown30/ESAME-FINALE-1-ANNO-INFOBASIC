@@ -12,7 +12,7 @@ def create(session,user):
     session.add(user)
     session.commit()
     session.refresh(user)
-    return user
+    return session.execute(select(User).where(User.id == user.id).options(selectinload(User.packages).selectinload(Package.statuses))).unique().scalar_one_or_none()
 
 def add_package(session,user_id,package_id):
     # questa riga controlla che esiste un utente con quel ID e che non abbia gia un pacco con l'ID da inserire!

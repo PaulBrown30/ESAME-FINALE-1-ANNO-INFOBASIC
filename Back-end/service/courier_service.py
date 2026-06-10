@@ -4,6 +4,7 @@ from exception.app_exception import AppException
 from model.courier_model import Courier
 import re
 import bcrypt
+from datetime import date
 
 def get_by_id(courier_id):
     with get_session() as session:
@@ -30,6 +31,10 @@ def create(courier_data):
         courier_data["password"].encode("utf-8"), bcrypt.gensalt()
     ).decode("utf-8")
 
+    dataStringa = courier_data["birth_date"]
+    anno, mese, giorno = dataStringa.split("-")
+    dataOrdinata = f"{giorno}/{mese}/{anno}"
+
     with get_session() as session:
 
         courier = Courier(
@@ -38,9 +43,9 @@ def create(courier_data):
             email = courier_data["email"],
             password = password_hash,
             phone_number = courier_data["phone_number"],
-            max_load = courier_data["max_load"],
-            birth_date = courier_data["birth_date"],
-            current_cap = courier_data["current_cap"]
+            max_load = courier_data.get("max_load"),
+            birth_date = dataOrdinata,
+            current_cap = courier_data.get("current_cap")
         )
 
         if account_repository.check_used_email(session,courier) is not None:
@@ -66,9 +71,9 @@ def update(courier_id,courier_data):
             email = courier_data["email"],
             password = password_hash,
             phone_number = courier_data["phone_number"],
-            max_load = courier_data["max_load"],
+            max_load = courier_data.get("max_load"),
             birth_date = courier_data["birth_date"],
-            current_cap = courier_data["current_cap"]
+            current_cap = courier_data.get("current_cap")
         )
 
         if account_repository.check_used_email(session,courier) is not None:
@@ -119,16 +124,11 @@ def delete_by_id(courier_id):
         
 
 def _validate_data(courier_data):
-    for field in ["name","surname","email","password","phone_number","birth_date","current_cap"]:
+    for field in ["name","surname","email","password","phone_number","birth_date"]:
         if field not in courier_data:
             raise AppException(f"Il campo {field} non è presente",400)
         if courier_data.get(field) is None or len(courier_data[field].strip()) == 0 or len(courier_data[field]) > 30:
             raise AppException(f"Il campo {field} ha un valore non valido",400)
-        
-    if "max_load" not in courier_data:
-            raise AppException(f"Il campo max_load non è presente",400)
-    if courier_data.get("max_load") is None:
-        raise AppException(f"Il campo {field} ha un valore non valido",400)
     
     for field in ["name", "surname"]: 
         if len(courier_data[field].strip()) < 3:
@@ -145,22 +145,40 @@ def _validate_data(courier_data):
     if len(courier_data["phone_number"]) != 10:
         raise AppException("Il numero di telefono deve avere 10 caratteri",400)
     
-    if type(courier_data["max_load"]) != int or courier_data["max_load"] < 0:
-        raise AppException("Il carico massimo non è valido",400)
+    if courier_data.get("max_load") is not None:
+        if type(courier_data.get("max_load")) != int or courier_data["max_load"] < 0:
+            raise AppException("Il carico massimo non è valido",400)
     
     if len(courier_data["birth_date"]) > 10:
         raise AppException("La data di nascita deve avere meno di 10 caratteri",400)
     
-    if len(courier_data["current_cap"]) != 5:
-        raise AppException("Il Cap corrente deve avere 5 caratteri",400)
-    
-    try:
-        conversione = int(courier_data["current_cap"])
-    except:
-        raise AppException("Il Cap corrente deve essre numerico",400)
 
+    if courier_data.get("current_cap") is not None:    
+        if len(courier_data["current_cap"]) != 5:
+            raise AppException("Il Cap corrente deve avere 5 caratteri",400)
+        try:
+            conversione = int(courier_data["current_cap"])
+        except:
+            raise AppException("Il Cap corrente deve essre numerico",400)
 
-    
+    dataStringa = courier_data["birth_date"]
+    anno, mese, giorno = dataStringa.split("-")
+
+    if len(anno) != 4:
+        raise AppException("L'anno deve avere 4 cifre",400)
+    if len(mese) != 2:
+        raise AppException("Il mese deve avere 4 cifre",400)
+    if len(giorno) != 2:
+        raise AppException("Il giorno deve avere 4 cifre",400)
+
+    data_nascita = date(int(anno), int(mese), int(giorno))
+    oggi = date.today()
+
+    # . days riceve il risulatato della sottrazione e lo divide per 365 (divisione intera //)
+    eta = (oggi - data_nascita).days 
+
+    if eta < 18:
+        raise AppException("Il corriere deve avere piu di 18 anni",400)
 
     
 

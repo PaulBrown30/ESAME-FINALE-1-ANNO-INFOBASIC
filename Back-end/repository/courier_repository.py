@@ -20,7 +20,8 @@ def create(session,courier):
     session.add(courier)
     session.commit()
     session.refresh(courier)
-    return courier
+    return session.execute(select(Courier).where(Courier.id == courier.id).options(selectinload(Courier.packages)
+            .selectinload(Package.statuses),with_loader_criteria(Package,Package.active == True))).unique().scalar_one_or_none()
 
 def update(session,courier):
     courier = session.merge(courier)

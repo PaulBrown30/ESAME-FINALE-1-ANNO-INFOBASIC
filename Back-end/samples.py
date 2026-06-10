@@ -14,9 +14,7 @@ def create_samples():
         "email": "test1@gmail.com",
         "password": "Testsuper31.",
         "phone_number": "3774567865",
-        "max_load" : 10,
-        "birth_date": "01/01/42",
-        "current_cap": "43121"
+        "birth_date": "2001-11-30",
     })
 
     status_service.create({
@@ -75,10 +73,10 @@ def create_samples():
         "weight": 76.55,
         "sender_name": "test assegnazione",
         "sender_surname": "Marrone",
-        "sender_cap": "43121",   # Parma
+        "sender_cap": "43121",   
         "receiver_name": "Gianni",
         "receiver_surname": "Celeste",
-        "receiver_cap": "43123",  # Parma (zona diversa)
+        "receiver_cap": "43123",  
         "estimated_arrival_date": "11/11/2026",
         "courier_id": 2
     })
@@ -89,10 +87,10 @@ def create_samples():
         "weight": 76.55,
         "sender_name": "Bruno",
         "sender_surname": "Marrone",
-        "sender_cap": "10121",   # Torino
+        "sender_cap": "10121",   
         "receiver_name": "Gianni",
         "receiver_surname": "Celeste",
-        "receiver_cap": "65124",  # Pescara (già corretto)
+        "receiver_cap": "65124",  
         "estimated_arrival_date": "11/11/2026",
         "courier_id": 2
     })
@@ -104,10 +102,10 @@ def create_samples():
         "weight": 76.55,
         "sender_name": "Brunoooooooooooooooooo",
         "sender_surname": "Marrone",
-        "sender_cap": "20121",   # Milano
+        "sender_cap": "20121",   
         "receiver_name": "Gianni",
         "receiver_surname": "Celeste",
-        "receiver_cap": "35121",  # Padova
+        "receiver_cap": "35121",  
         "estimated_arrival_date": "11/11/2026",
         "courier_id": 2
     })

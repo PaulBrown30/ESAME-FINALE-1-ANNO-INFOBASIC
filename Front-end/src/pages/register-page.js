@@ -27,7 +27,9 @@ export function RegisterPage() {
             const data = await res.json()
             console.log(data)
             if(!res.ok) {
-                SetEmailError(true)            
+                SetEmailError(true)
+            } else {
+                document.location.pathname = "/home"                
             }
         })
         .catch((err)=> {

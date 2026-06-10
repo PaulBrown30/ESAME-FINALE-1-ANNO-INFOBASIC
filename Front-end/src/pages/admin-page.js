@@ -35,6 +35,37 @@ export function AdminPage() {
         console.log(admin_data)
         if (res.ok) {
             SetAdminData(admin_data)
+            
+                fetch(`http://127.0.0.1:5000/api/packages`)
+                .then(async (res) => {
+                    const packages = await res.json()
+                    console.log(packages)
+                    if (res.ok) {
+                        SetPackages(packages)
+                    }
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+                .finally(() => {
+                    SetLoading(false)
+                })
+            
+                fetch(`http://127.0.0.1:5000/api/couriers`)
+                .then(async (res) => {
+                    const couriers = await res.json()
+                    console.log(couriers)
+                    if (res.ok) {
+                        SetCouriers(couriers)
+                    }
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+                .finally(() => {
+                    SetLoading(false)
+                })
+
         }
     })
     .catch((err) => {
@@ -44,36 +75,6 @@ export function AdminPage() {
         SetLoading(false)
     })
 
-
-    fetch(`http://127.0.0.1:5000/api/packages`)
-    .then(async (res) => {
-        const packages = await res.json()
-        console.log(packages)
-        if (res.ok) {
-            SetPackages(packages)
-        }
-    })
-    .catch((err) => {
-        console.log(err)
-    })
-    .finally(() => {
-        SetLoading(false)
-    })
-
-    fetch(`http://127.0.0.1:5000/api/couriers`)
-    .then(async (res) => {
-        const couriers = await res.json()
-        console.log(couriers)
-        if (res.ok) {
-            SetCouriers(couriers)
-        }
-    })
-    .catch((err) => {
-        console.log(err)
-    })
-    .finally(() => {
-        SetLoading(false)
-    })
 
     return jd.div({},[
         jd.table({
@@ -127,7 +128,16 @@ export function AdminPage() {
                                                                 }
                                                             })
                                                         }
-                                                    },[])                                      
+                                                    },[]),
+                                                    jd.div({className: "flex flex-row px-4 py-2 gap-4 bg-white rounded-xl items-center"},[
+                                                        jd.a({
+                                                            className: "btn btn-lg btn-primary",
+                                                            href: ((Category() == "packages")? `/admins/${admin_id}/add_package` : `/admins/${admin_id}/add_courier`)
+                                                        },[
+                                                            jd.lucide("Plus",{className: "size-6"}),
+                                                            jd.p({},["Aggiungi " + ((Category() == "packages")? "Spedizione" : "Corriere")])
+                                                        ])
+                                                    ])                                   
                                                 ])
                                             );
                                             if (Category() == "packages" ) {
