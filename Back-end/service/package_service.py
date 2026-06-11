@@ -1,8 +1,12 @@
 from repository import package_repository
+from repository import courier_repository
 from model.package_model import Package
 from service import courier_service
 from persistence.db_config import get_session
 from exception.app_exception import AppException
+import pgeocode
+from geopy.distance import geodesic
+import datetime
 
 def get_by_id(package_id):
     with get_session() as session:
@@ -23,9 +27,57 @@ def create(package_data):
 
     with get_session() as session:
 
+        less_package_courier = courier_repository.get_less_packages_courier(session)
+
+        if less_package_courier is None:
+            raise AppException("Nessun corriere trovato")
+        
+        nomi_paese = pgeocode.Nominatim('it')
+
+        cap1 = package_data["sender_cap"]
+        cap2 = package_data["receiver_cap"]
+
+        try:
+            info_cap1 = nomi_paese.query_postal_code(cap1)
+            info_cap2 = nomi_paese.query_postal_code(cap2)
+        except:
+            raise AppException("Uno dei due Cap inseriti non è valido")
+
+        coordinate1 = (info_cap1['latitude'], info_cap1['longitude'])
+        coordinate2 = (info_cap2['latitude'], info_cap2['longitude'])
+
+
+        if less_package_courier.packages != []:
+            cap3 = less_package_courier.packages[-1].receiver_cap
+            info_cap3 = nomi_paese.query_postal_code(cap3)
+            coordinate3 = (info_cap3['latitude'], info_cap3['longitude'])
+            distance = geodesic(coordinate3, coordinate1).km + geodesic(coordinate1, coordinate2).km
+
+        else:
+            distance = geodesic(coordinate1, coordinate2).km
+
+        calculated_price = (distance * package_data["weight"])/1000
+        
+        # Calcolo durata del viaggio:
+        AVARAGE_SPEED_KMH = 60.0
+
+        hours = distance / AVARAGE_SPEED_KMH
+
+        days = hours / 24
+
+        estimated_time = round(days, 1)
+        time_to_add = datetime.timedelta(days=estimated_time)
+
+        if less_package_courier.packages != []:
+            last_package_estimated_arrival_date = datetime.datetime.strptime(less_package_courier.packages[-1].estimated_arrival_date, "%d/%m/%Y")
+            delivery_date = (last_package_estimated_arrival_date + time_to_add).strftime("%d/%m/%Y")
+        else:
+            today = datetime.datetime.now()
+            delivery_date = (today + time_to_add).strftime("%d/%m/%Y")
+
         package = Package(
             id = package_data["id"],
-            price = package_data["price"],
+            price = calculated_price,
             weight = package_data["weight"],
             sender_name = package_data["sender_name"],
             sender_surname = package_data["sender_surname"],
@@ -33,7 +85,7 @@ def create(package_data):
             receiver_name = package_data["receiver_name"],
             receiver_surname = package_data["receiver_surname"],
             receiver_cap = package_data["receiver_cap"],
-            estimated_arrival_date = package_data["estimated_arrival_date"],
+            estimated_arrival_date = delivery_date,
             courier_id = package_data["courier_id"]          
         )
 
@@ -87,13 +139,13 @@ def set_inactive(package_id):
        
 def _validate_data(package_data):
 
-    for field in ["id","sender_name","sender_surname","sender_cap","receiver_name","receiver_surname","receiver_cap","estimated_arrival_date"]:
+    for field in ["id","sender_name","sender_surname","sender_cap","receiver_name","receiver_surname","receiver_cap"]:
         if field not in package_data:
             raise AppException(f"Il campo {field} non è presente",400)
         if package_data.get(field) is None or len(package_data[field].strip()) == 0:
             raise AppException(f"Il campo {field} non è valido",400)
         
-    for field in ["price","weight"]:
+    for field in ["weight"]:
         if field not in package_data:
             raise AppException(f"Il campo {field} non è presente",400)
         if package_data.get(field) is None:
@@ -112,18 +164,13 @@ def _validate_data(package_data):
         if len(package_data[field]) != 5:
             raise AppException(f"il campo {field} deve avere 5 caratteri",400)
         
-    for field in ["price","weight"]:
+    for field in ["weight"]:
         if type(package_data[field]) is not float and type(package_data[field]) is not int:
             raise AppException(f"Il campo {field} deve essere un numero",400)
         if package_data[field] < 0:
             raise AppException(f"Il campo {field} richeide un valore positivo",400)
-
-    if package_data["price"] >= 1000000:
-        raise AppException(f"Il campo price non puo superare il valore di 1.000.000 ")
     
     if package_data["weight"] >= 1000:
         raise AppException(f"Il campo weight non puo superare il valore di 1000")
 
-    if len(package_data["estimated_arrival_date"]) > 10:
-        raise AppException("La data di arrivo stimata deve avere massimo 10 caratteri")
         

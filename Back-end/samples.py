@@ -69,21 +69,18 @@ def create_samples():
 
     package_service.create({
         "id": "1234567892",
-        "price": 76.55,
         "weight": 76.55,
         "sender_name": "test assegnazione",
         "sender_surname": "Marrone",
         "sender_cap": "43121",   
         "receiver_name": "Gianni",
         "receiver_surname": "Celeste",
-        "receiver_cap": "43123",  
-        "estimated_arrival_date": "11/11/2026",
+        "receiver_cap": "65124",  
         "courier_id": 2
     })
 
     package_service.create({
         "id": "1234567890",
-        "price": 76.55,
         "weight": 76.55,
         "sender_name": "Bruno",
         "sender_surname": "Marrone",
@@ -91,14 +88,12 @@ def create_samples():
         "receiver_name": "Gianni",
         "receiver_surname": "Celeste",
         "receiver_cap": "65124",  
-        "estimated_arrival_date": "11/11/2026",
         "courier_id": 2
     })
 
 
     package_service.create({
         "id": "1234567891",
-        "price": 76.55,
         "weight": 76.55,
         "sender_name": "Brunoooooooooooooooooo",
         "sender_surname": "Marrone",
@@ -106,13 +101,11 @@ def create_samples():
         "receiver_name": "Gianni",
         "receiver_surname": "Celeste",
         "receiver_cap": "35121",  
-        "estimated_arrival_date": "11/11/2026",
         "courier_id": 2
     })
 
     package_service.create({
         "id": "1234567893",
-        "price": 76.55,
         "weight": 76.55,
         "sender_name": "test non consegnato",
         "sender_surname": "Marrone",
@@ -120,13 +113,11 @@ def create_samples():
         "receiver_name": "Gianni",
         "receiver_surname": "Celeste",
         "receiver_cap": "37121", 
-        "estimated_arrival_date": "11/11/2026",
         "courier_id": 2
     })
 
     package_service.create({
         "id": "1234567894",
-        "price": 76.55,
         "weight": 76.55,
         "sender_name": "test non consegnato",
         "sender_surname": "Marrone",
@@ -134,7 +125,6 @@ def create_samples():
         "receiver_name": "Gianni",
         "receiver_surname": "Celeste",
         "receiver_cap": "37121", 
-        "estimated_arrival_date": "11/11/2026",
         "courier_id": 2
     })
 

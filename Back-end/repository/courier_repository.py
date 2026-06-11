@@ -16,6 +16,12 @@ def get_all(session):
 def get_available_couriers(session):
     return session.execute(select(Courier).outerjoin(Courier.packages,Package.active == True).group_by(Courier.id, Account.id).having(func.count(Package.id)< Courier.max_load)).scalars().all()
 
+def get_less_packages_courier(session):
+    return session.execute(select(Courier).outerjoin(Courier.packages).group_by(Account.id, Courier.id)
+                           .order_by(func.count(Package.id).filter(Package.active == True).asc())
+                           .options(selectinload(Courier.packages),with_loader_criteria(Package, Package.active == True)).limit(1)).scalar_one_or_none()
+    
+
 def create(session,courier):
     session.add(courier)
     session.commit()

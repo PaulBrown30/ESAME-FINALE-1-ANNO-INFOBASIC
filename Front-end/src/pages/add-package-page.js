@@ -10,9 +10,7 @@ export function AddPackagePage() {
     console.log(admin_id)    
     
     const passwordInputRef = createRef();
-    const [PasswordVisible, SetPasswordVisible] = createSignal(false);
     const [Loading,SetLoading] = createSignal(false);
-    const [EmailError, SetEmailError] = createSignal(false);
     const [AdminData, SetAdminData] = createSignal()
 
     SetLoading(true)
@@ -50,7 +48,7 @@ export function AddPackagePage() {
         const dataform = new FormData(e.target)
         const data = Object.fromEntries(dataform)
         console.log(data)
-        fetch(`http://127.0.0.1:5000/api/package/create`,
+        fetch(`http://127.0.0.1:5000/api/packages/create`,
             {method: "POST",
             body: JSON.stringify(data),
             headers: {"Content-Type": "application/json"}
@@ -65,7 +63,6 @@ export function AddPackagePage() {
         })
         .catch((err)=> {
             console.log(err)
-            SetEmailError(true)
         })
         .finally(() => {
             SetLoading(false)
