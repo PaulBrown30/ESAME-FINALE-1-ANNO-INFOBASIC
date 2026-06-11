@@ -128,6 +128,10 @@ export function HomePage() {
                                             jd.div({className: "flex flex-col"},[
                                                 jd.p({className: "font-bold "},["Destinatario"]),
                                                 jd.p({},[`${PackageData().receiver_name} ${PackageData().receiver_surname}  CAP.${PackageData().receiver_cap}`])
+                                            ]),
+                                            jd.div({className: "flex flex-col"},[
+                                                jd.p({className: "font-bold "},["Codice Corriere"]),
+                                                jd.p({},[`${PackageData().courier_id}`])
                                             ])
                                         ]),
                                         jd.div({className: "flex flex-col h-full text-right"},[

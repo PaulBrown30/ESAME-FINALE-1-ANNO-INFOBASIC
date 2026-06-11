@@ -180,6 +180,10 @@ function packageRow({package_data}) {
             jd.p({},[`CAP. ${package_data.receiver_cap}`]),
         ]),
         jd.td({className: " p-4 px-6 border-l-2 align-top"},[
+            jd.p({className: "font-bold "},["Codice Corriere"]),
+            jd.p({},[`${package_data.courier_id}`])
+        ]),
+        jd.td({className: " p-4 px-6 border-l-2 align-top"},[
             jd.p({className: "font-bold "},["Peso"]),
             jd.p({},[`${package_data.weight} kg.`])
         ]),
@@ -252,12 +256,16 @@ function packageRow({package_data}) {
 function CourierRow({courier_data}) {
     return jd.tr({className: "mt-4 shadow-xl bg-amber-100 rounded-2xl border-2 m-2 mx-6 gap-3 "},[
         jd.td({className: "p-4 px-6 border-l-2 align-top"},[
+            jd.p({className: "font-bold "},["Codice"]),
+            jd.p({},[`${courier_data.id}`])
+        ]),
+        jd.td({className: "p-4 px-6 border-l-2 align-top"},[
             jd.p({className: "font-bold "},["Nome Cognome"]),
             jd.p({},[`${courier_data.name} ${courier_data.surname}`])
         ]),
         jd.td({className: " p-4 px-6 border-l-2 align-top"},[
             jd.p({className: "font-bold "},["Current Location"]),
-            jd.p({},[`${courier_data.current_cap} CAP`])
+            jd.p({},[`CAP. ${courier_data.current_cap}`])
         ]),
         jd.td({className: "p-4 px-6 border-l-2 align-top"},[
             jd.p({className: "font-bold "},["Data di Nascita"]),

@@ -73,6 +73,7 @@ class Package(Base):
             "estimated_arrival_date": self.estimated_arrival_date.strftime("%d/%m/%Y %H:%M:%S"),
             "actual_arrival_date": self.actual_arrival_date.strftime("%d/%m/%Y %H:%M:%S") if self.actual_arrival_date else None,
             "active": self.active,
+            "courier_id": self.courier_id,
             "statuses": [s.to_dict() for s in self.statuses]
         }
 

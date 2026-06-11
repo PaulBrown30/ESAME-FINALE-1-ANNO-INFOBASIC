@@ -185,6 +185,10 @@ function packageRow({package_data}) {
             jd.p({},[`CAP. ${package_data.receiver_cap}`]),
         ]),
         jd.td({className: " p-4 px-6 border-l-2 align-top"},[
+            jd.p({className: "font-bold "},["Codice Corriere"]),
+            jd.p({},[`${package_data.courier_id}`])
+        ]),
+        jd.td({className: " p-4 px-6 border-l-2 align-top"},[
             jd.p({className: "font-bold "},["Peso"]),
             jd.p({},[`${package_data.weight} kg.`])
         ]),
