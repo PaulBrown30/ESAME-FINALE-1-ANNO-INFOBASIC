@@ -31,10 +31,10 @@ def create(status_data):
         )
 
         if status_repository.check_used_id(session,status) is not None:
-            raise AppException("Esiste gia uno stato con questo id")
+            raise AppException("Esiste gia uno stato con questo id",409)
 
         if status_repository.check_used_name(session,status) is not None:
-            raise AppException("Esiste gia uno stato con questo nome")
+            raise AppException("Esiste gia uno stato con questo nome",409)
         
         return status_repository.create(session,status)
 

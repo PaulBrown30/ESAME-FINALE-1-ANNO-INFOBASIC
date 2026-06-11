@@ -2,6 +2,7 @@ from model.package_model import Package
 from model.status_model import Status
 from sqlalchemy import select, not_
 from sqlalchemy.orm import selectinload
+import datetime
 
 def get_by_id(session,package_id):
     return session.execute(select(Package).where(Package.id == package_id).options(selectinload(Package.statuses))).unique().scalar_one_or_none() 
@@ -19,8 +20,7 @@ def create(session,package):
     package.statuses.append(status)
 
     session.commit()
-    session.refresh(package)
-    return package
+    return session.execute(select(Package).where(Package.id == package.id).options(selectinload(Package.statuses))).unique().scalar_one_or_none() 
 
 def delete_by_id(session,package_id):
     package = session.get(Package,package_id)
@@ -53,6 +53,17 @@ def set_inactive(session,package_id):
         return False
     
     package.active = False
+    
+    session.commit()
+    session.refresh(package)
+    return package
+
+def set_arrival_date(session,package_id):
+    package = session.get(Package,package_id)
+    if package == None:
+        return False
+    
+    package.actual_arrival_date = datetime.datetime.now()
     
     session.commit()
     session.refresh(package)

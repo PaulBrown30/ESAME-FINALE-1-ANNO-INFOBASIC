@@ -193,6 +193,10 @@ function packageRow({package_data}) {
             jd.p({},[`${package_data.estimated_arrival_date}`])
         ]),
         jd.td({className: "p-4 px-6 border-l-2 align-top"},[
+            jd.p({className: "font-bold "},["Data di arrivo effettiva"]),
+            jd.p({},[package_data.actual_arrival_date? `${package_data.actual_arrival_date}` : "Non Disponibile"])
+        ]),
+        jd.td({className: "p-4 px-6 border-l-2 align-top"},[
             jd.div({className: "flex flex-row relative justify-between bg-white py-3 px-2 rounded-2xl shadow-lg gap-6"},[
                 jd.div({className: "flex flex-col items-center " + (package_data.statuses.some(dizionario => dizionario.id === "S-001")? " text-amber-400" : "opacity-20")},[
                     jd.lucide("PackageCheck",{className: "size-10"}),

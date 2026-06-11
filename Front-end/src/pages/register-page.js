@@ -8,11 +8,11 @@ export function RegisterPage() {
     const passwordInputRef = createRef();
     const [PasswordVisible, SetPasswordVisible] = createSignal(false);
     const [Loading,SetLoading] = createSignal(false);
-    const [EmailError, SetEmailError] = createSignal(false);
+    const [FormError, SetFormError] = createSignal(false);
 
     const HandleSubmit = async (e) => {
         SetLoading(true)
-        SetEmailError(false)
+        SetFormError(false)
         e.preventDefault()
 
         const dataform = new FormData(e.target)
@@ -27,14 +27,14 @@ export function RegisterPage() {
             const data = await res.json()
             console.log(data)
             if(!res.ok) {
-                SetEmailError(true)
+                SetFormError(true)
             } else {
                 document.location.pathname = "/home"                
             }
         })
         .catch((err)=> {
             console.log(err)
-            SetEmailError(true)
+            SetFormError(true)
         })
         .finally(() => {
             SetLoading(false)
@@ -99,21 +99,7 @@ export function RegisterPage() {
                     ]),
                     jd.p({className:"validator-hint hidden"},[
                         "Inserisci un email valida"
-                    ]),
-                    jd.div({
-                        className:"flex",
-                        ref: el => {
-                            effect(el,() => {
-                                if (EmailError()) {
-                                    el.replaceChildren(
-                                        jd.p({ className: "px-2 pt-2 text-red-400"},["Email gia utilizzata!"])
-                                    )
-                                } else {
-                                    el.replaceChildren()                                    
-                                }
-                            })
-                        }
-                    },[])
+                    ])
                 ]),
                 jd.div({},[
                     jd.label({className: "input validator w-full"},[
@@ -169,7 +155,21 @@ export function RegisterPage() {
                         }
                     })
                 }
-            },["Registra"])
+            },["Registra"]),
+            jd.div({
+                className:"flex justify-center",
+                ref: el => {
+                    effect(el,() => {
+                        if (FormError()) {
+                            el.replaceChildren(
+                                jd.p({ className: "px-2 pt-2 text-red-400"},["Valori non validi!"])
+                            )
+                        } else {
+                            el.replaceChildren()                                    
+                        }
+                    })
+                }
+            },[])
         ])
     ])
 }

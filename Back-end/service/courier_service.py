@@ -167,15 +167,14 @@ def _validate_data(courier_data):
     if len(anno) != 4:
         raise AppException("L'anno deve avere 4 cifre",400)
     if len(mese) != 2:
-        raise AppException("Il mese deve avere 4 cifre",400)
+        raise AppException("Il mese deve avere 2 cifre",400)
     if len(giorno) != 2:
-        raise AppException("Il giorno deve avere 4 cifre",400)
+        raise AppException("Il giorno deve avere 2 cifre",400)
 
     data_nascita = date(int(anno), int(mese), int(giorno))
     oggi = date.today()
 
-    # . days riceve il risulatato della sottrazione e lo divide per 365 (divisione intera //)
-    eta = (oggi - data_nascita).days 
+    eta = oggi.year - data_nascita.year
 
     if eta < 18:
         raise AppException("Il corriere deve avere piu di 18 anni",400)

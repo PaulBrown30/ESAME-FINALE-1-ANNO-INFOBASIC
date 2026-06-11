@@ -12,6 +12,7 @@ export function AddPackagePage() {
     const passwordInputRef = createRef();
     const [Loading,SetLoading] = createSignal(false);
     const [AdminData, SetAdminData] = createSignal()
+    const [FormError, SetFormError] = createSignal(false);
 
     SetLoading(true)
 
@@ -56,13 +57,15 @@ export function AddPackagePage() {
         .then(async (res)=> {
             const data = await res.json()
             console.log(data)
-            if(!res.ok) {      
+            if(!res.ok) {  
+                SetFormError(true)    
             } else {
                 document.location.pathname = `/admins/${admin_id}`
             }
         })
         .catch((err)=> {
             console.log(err)
+            SetFormError(true)
         })
         .finally(() => {
             SetLoading(false)
@@ -193,25 +196,50 @@ export function AddPackagePage() {
                                     ]),
                                 ]),
                                 jd.div({},["Dati Pacco"]),
-                                jd.div({className: "w-full"},[
-                                    jd.label({className: "input validator w-full"},[
-                                        jd.lucide("Weight",{className:"size-5"}),
-                                        jd.input({
-                                            placeholder: "Inserisci il peso in Kg.",
-                                            id: "weight",
-                                            name: "weight",
-                                            type: "number",
-                                            min: 0.01,
-                                            step:0.01,
-                                            max: 999.99,
-                                            maxLength: 6,
-                                            required: "true",
-                                        },[])
+                                jd.div({className: "flex flex-row gap-3 align-bottom"},[
+                                    jd.div({className: "w-full"},[
+                                        jd.label({className: "input validator w-full"},[
+                                            jd.lucide("Barcode",{className:"size-5"}),
+                                            jd.input({
+                                                placeholder: "Inserisci codice",
+                                                id: "id",
+                                                name: "id",
+                                                type: "text",
+                                                minLength: 10,
+                                                maxLength: 10,
+                                                inputmode: "numeric",
+                                                required: "true"
+                                            },[])
+                                        ]),
+                                        jd.p({className:"validator-hint hidden"},[
+                                            "Il codice deve avere 10 caratteri!"
+                                        ]),
                                     ]),
-                                    jd.p({className:"validator-hint hidden"},[
-                                        "Il Peso deve essere tra 0.01 e 999.99!"
+                                    jd.div({className: "w-full"},[
+                                        jd.label({className: "input validator w-full"},[
+                                            jd.lucide("Weight",{className:"size-5"}),
+                                            jd.input({
+                                                placeholder: "Inserisci il peso in Kg.",
+                                                id: "weight",
+                                                name: "weight",
+                                                type: "number",
+                                                min: 0.01,
+                                                step:0.01,
+                                                max: 999.99,
+                                                maxLength: 6,
+                                                required: "true",
+                                            },[])
+                                        ]),
+                                        jd.p({className:"validator-hint hidden"},[
+                                            "Il Peso deve essere tra 0.01 e 999.99!"
+                                        ]),
                                     ]),
                                 ]),
+
+
+
+
+
                             ]),
                             jd.button({ 
                                 className: "m-2 btn bg-gray-800 text-white",
@@ -227,7 +255,21 @@ export function AddPackagePage() {
                                         }
                                     })
                                 }
-                            },["Registra"])
+                            },["Registra"]),
+                            jd.div({
+                                className:"flex justify-center",
+                                ref: el => {
+                                    effect(el,() => {
+                                        if (FormError()) {
+                                            el.replaceChildren(
+                                                jd.p({ className: "px-2 pt-2 text-red-400"},["Valori non validi!"])
+                                            )
+                                        } else {
+                                            el.replaceChildren()                                    
+                                        }
+                                    })
+                                }
+                            },[])
                         ])
                     )
                 } else {

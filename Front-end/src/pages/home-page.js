@@ -132,8 +132,8 @@ export function HomePage() {
                                         ]),
                                         jd.div({className: "flex flex-col h-full text-right"},[
                                             jd.div({className: "flex flex-col"},[
-                                                jd.p({className: "font-bold "},["Data Stimata di arrivo"]),
-                                                jd.p({},[`${PackageData().estimated_arrival_date}`])
+                                                jd.p({className: "font-bold "},[PackageData().actual_arrival_date? "Data di arrivo" : "Data stimata di arrivo"]),
+                                                jd.p({},[PackageData().actual_arrival_date? `${PackageData().actual_arrival_date}`: `${PackageData().estimated_arrival_date}`])
                                             ]),
                                             jd.div({className: "flex flex-col"},[
                                                 jd.p({className: "font-bold "},["Peso"]),
