@@ -87,7 +87,7 @@ export function AdminPage() {
                                         if (!Loading()) {
                                             el.innerHTML = ""
                                             el.append(
-                                                jd.div({className: "flex flex-row my-4 gap-4"},[
+                                                jd.div({className: "flex flex-row my-4 gap-4 w-max"},[
                                                     jd.div({ className: "flex flex-col px-6 py-3 bg-white rounded-xl "},[
                                                         jd.p({className: "font-bold"},["Admin:"]),
                                                         jd.p({
