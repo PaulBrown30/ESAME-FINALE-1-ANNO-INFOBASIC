@@ -1,4 +1,4 @@
-from service import auth_service,admin_service,user_service,status_service,courier_service,package_service
+from service import admin_service,user_service,status_service,courier_service,package_service
 
 def create_samples():
     admin_service.create({

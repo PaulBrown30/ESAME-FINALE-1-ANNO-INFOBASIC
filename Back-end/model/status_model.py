@@ -25,7 +25,7 @@ class Status(Base):
     next_ammitted_statuses = relationship("Status",
                             secondary = admitted_status_transitions,
                             primaryjoin = (id == admitted_status_transitions.c.existing_status_id),
-                            secondaryjoin=(id == admitted_status_transitions.c.added_status_id),
+                            secondaryjoin = (id == admitted_status_transitions.c.added_status_id),
                             foreign_keys=[
                                 admitted_status_transitions.c.existing_status_id,
                                 admitted_status_transitions.c.added_status_id,

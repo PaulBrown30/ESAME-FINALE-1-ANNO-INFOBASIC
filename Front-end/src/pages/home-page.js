@@ -33,12 +33,12 @@ export function HomePage() {
         })
     }
 
-    return jd.div({className:"flex flex-col"},[
+    return jd.div({className:"flex flex-col bg-amber-200"},[
         HomeHeader(),
-        jd.div({className: "flex relative justify-center"},[
-            jd.img({className: "h-200 w-full object-cover object-top",src:"./assets/homepage.png"},[]),
-            jd.div({className:"flex flex-col absolute z-10 top-48 gap-4"},[
-                jd.div({ className: "flex px-6 py-3 bg-gray-900 rounded-xl"},[
+        jd.div({className: "flex relative justify-center p-4"},[
+            jd.img({className: "h-200 w-full object-cover object-top rounded-2xl",src:"./assets/homepage.png"},[]),
+            jd.div({className:"flex flex-col absolute z-10 top-48 gap-4 bg-white p-6 rounded-2xl"},[
+                jd.div({ className: "flex px-6 py-3 bg-amber-500 rounded-xl"},[
                     jd.p({className: "text-2xl text-white font-bold"},["TRACCIA IL TUO PACCO"])
                 ]),
                 jd.label({className: "flex flex-row bg-white items-center h-20 input align-bottom outline-0 w-150"},[
@@ -157,6 +157,13 @@ export function HomePage() {
                     }
                 },[])
             ])          
+        ]),
+        jd.div({className:"border-t border-white bg-amber-500"},[
+            jd.div({className: "flex flex-col container m-auto font-bold items-center p-3 gap-1"},[
+                jd.p({},["LumacaExpress™ è un marchio registrato. Consegne rapide (secondo i nostri standard)"]),
+                jd.p({},["LumacaExpress™ declina ogni responsabilità per consegne non effettuate entro il secolo corrente."]),
+                jd.p({},["Spediamo oggi, consegniamo un giorno. Forse."])
+            ])
         ])
     ])
 } 
