@@ -341,34 +341,16 @@ function packageRow({ package_data,index,courier }) {
                 className: "flex flex-row relative justify-between bg-white py-3 px-2 rounded-2xl shadow-lg gap-6",
             }, [
                 jd.div({
-                    className:
-                        "flex flex-col items-center " +
-                        (package_data.statuses.some((s) => s.id === "S-001")
-                            ? "text-amber-400"
-                            : "opacity-20"),
+                    className:"flex flex-col items-center " + (package_data.statuses.some((s) => s.id === "S-001")? "text-amber-400" : "opacity-20"),
                 }, [
                     jd.lucide("PackageCheck", { className: "size-10" }),
                     jd.p({ className: "font-bold" }, ["Preso in Carico"]),
                 ]),
                 jd.div({
-                    className:
-                        "flex flex-col items-center " +
-                        (package_data.statuses.some((s) => s.id === "S-002")
-                            ? "text-amber-400"
-                            : "opacity-20"),
+                    className:"flex flex-col items-center " + (package_data.statuses.some((s) => s.id === "S-002")? "text-amber-400" : "opacity-20"),
                 }, [
                     jd.lucide("Van", { className: "size-10" }),
                     jd.p({ className: "font-bold" }, ["In consegna"]),
-                ]),
-                jd.div({
-                    className:
-                        "flex flex-col items-center " +
-                        (package_data.statuses.some((s) => s.id === "S-003")
-                            ? "text-amber-400"
-                            : "opacity-20"),
-                }, [
-                    jd.lucide("Home", { className: "size-10" }),
-                    jd.p({ className: "font-bold" }, ["Consegnato"]),
                 ]),
             ]),
         ]),
