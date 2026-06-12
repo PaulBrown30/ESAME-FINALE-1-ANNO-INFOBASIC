@@ -38,6 +38,25 @@ def create(status_data):
         
         return status_repository.create(session,status)
 
+    
+def add_ammitted_transition(existing_status_id,added_status_id):
+    
+    with get_session() as session:
+        
+        existing_status = status_repository.get_by_id(session, existing_status_id)
+        if existing_status is None:
+            raise AppException("Stato di partenza non trovato", 404)
+
+        added_status = status_repository.get_by_id(session, added_status_id)
+        if added_status is None:
+            raise AppException("Stato di arrivo non trovato", 404)
+        
+        is_transition_added = status_repository.add_status_transitions(session,existing_status,added_status)
+        if is_transition_added is False:
+            raise AppException("Questa transizione gia esiste", 404)
+        
+        return True
+    
 def _validate_data(status_data):
     for field in ["id","name","description"]:
         if field not in status_data:
@@ -45,7 +64,7 @@ def _validate_data(status_data):
         if status_data.get(field) is None or len(status_data[field].strip()) == 0:
             raise AppException(f"Il campo {field} non è valido",400)
     
-    if len(status_data["id"]) > 10:
+    if len(status_data["id"]) > 5:
         raise AppException("L'id deve avere massimo 10 caratteri",400)    
 
     if len(status_data["name"]) > 30:

@@ -118,12 +118,18 @@ def add_status(package_id,status_id,courier_id):
 
         package = package_repository.add_status(session,package_id,status_id)
     
-        if package is 1:
+        if package is 0:
             raise AppException("Non è stato possibile trovare il pacco",404)
         
-        if package is 2:
+        if package is 1:
             raise AppException("Non è stato possibile trovare lo stato",404)
-        
+
+        if package is 2:
+            raise AppException("Il primo stato deve essere sempre quello di preso in carico!",404)
+            
+        if package is 3:
+            raise AppException("Il cambio di stato non è permesso tra questi due stati!",404)
+
         if status_id in ["S-003","S-101","S-102","S-103"]:
             set_inactive(package_id)
 

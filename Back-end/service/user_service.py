@@ -50,7 +50,6 @@ def add_package(user_id,package_id):
             raise AppException("Il pacco è gia assegnato all'utente!",404)      
         
         return package_added
-    
 
 def _validate_data(user_data):
     for field in ["name","surname","email","password"]:

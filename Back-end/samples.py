@@ -53,6 +53,13 @@ def create_samples():
         "description": "Il pacco non è stato ritirato!"
     })
 
+
+    status_service.add_ammitted_transition("S-001","S-002")
+    status_service.add_ammitted_transition("S-001","S-103")
+    status_service.add_ammitted_transition("S-002","S-003")
+    status_service.add_ammitted_transition("S-002","S-101")
+    status_service.add_ammitted_transition("S-002","S-102")
+
     user_service.create({
         "name": "Paolo",
         "surname": "Marrone",
