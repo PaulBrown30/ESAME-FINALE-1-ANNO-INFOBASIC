@@ -11,10 +11,13 @@ export function AdminPage() {
     console.log(admin_id)
 
     const [Packages, SetPackages] = createSignal([])
+    const [NoFilterPackages, SetNoFilterPackages] = createSignal([])
     const [Couriers, SetCouriers] = createSignal([])
     const [AdminData, SetAdminData] = createSignal()
     const [Category, SetCategory] = createSignal("packages")
+    const [Filter,SetFilter] = createSignal("nessuno")
     const [Loading, SetLoading] = createSignal(false)
+    const FilterRef = createRef()
 
     const inputRef = createRef()
 
@@ -42,6 +45,7 @@ export function AdminPage() {
                     console.log(packages)
                     if (res.ok) {
                         SetPackages(packages)
+                        SetNoFilterPackages(packages)
                     }
                 })
                 .catch((err) => {
@@ -81,11 +85,11 @@ export function AdminPage() {
                         el.replaceChildren(
                             AccountHeader(),
                             jd.tbody({
-                                className: "container self-center mt-4 i overflow-x-auto",
+                                className: "container self-center mt-4 overflow-x-auto h-screen",
                                 ref: el => {
                                     effect(el, () => {
                                         if (!Loading()) {
-                                            el.innerHTML = ""
+                                            el.replaceChildren();
                                             el.append(
                                                 jd.div({className: "flex flex-row my-4 gap-4 w-max"},[
                                                     jd.div({ className: "flex flex-col px-6 py-3 bg-white rounded-xl "},[
@@ -125,6 +129,48 @@ export function AdminPage() {
                                                             })
                                                         }
                                                     },[]),
+                                                    jd.div({
+                                                        className: "flex flex-row px-4 py-2 gap-4 bg-white rounded-xl items-center" + (Category() == "packages"? " ":" hidden")                                                                                                                                                        
+                                                    },[                                                        
+                                                        jd.button({
+                                                            className: "btn btn-lg w-40 relative",
+                                                            onclick: () => {
+                                                                FilterRef.current.classList.toggle("hidden")
+                                                                FilterRef.current.classList.toggle("flex")                                                    
+                                                            }
+                                                        },[
+                                                            jd.lucide("ArrowDown",{className: "size-6"}),
+                                                            jd.p({},["Filtri"]),
+                                                            jd.div({
+                                                                className: "absolute top-18 w-60 bg-white flex-col gap-1 p-2 rounded-lg hidden shadow-2xl",
+                                                                ref: FilterRef,
+                                                            },[
+                                                                jd.button({
+                                                                    className:"btn" + (Filter() == "attivi"? " bg-green-500 text-white": ""),
+                                                                    onclick: (e) => {
+                                                                        SetPackages(NoFilterPackages())
+                                                                        SetPackages(Packages().filter(package_data => package_data.active))
+                                                                        SetFilter("attivi")
+                                                                    }
+                                                                },["Spedizioni attive"]),
+                                                                jd.button({
+                                                                    className:"btn" + (Filter() == "inattivi"? " bg-green-500 text-white": ""),
+                                                                    onclick: () => {
+                                                                        SetPackages(NoFilterPackages())
+                                                                        SetPackages(Packages().filter(package_data => !package_data.active))
+                                                                        SetFilter("inattivi")
+                                                                    }
+                                                                },["Spedizioni inattive"]),
+                                                                jd.button({
+                                                                    className:"btn" + (Filter() == "nessuno"? " bg-green-500 text-white": ""),
+                                                                    onclick: () => {
+                                                                        SetPackages(NoFilterPackages())
+                                                                        SetFilter("nessuno")
+                                                                    }
+                                                                },["Nessun Filtro"]),
+                                                            ])
+                                                        ])    
+                                                    ]),
                                                     jd.div({className: "flex flex-row px-4 py-2 gap-4 bg-white rounded-xl items-center"},[
                                                         jd.a({
                                                             className: "btn btn-lg btn-primary",
