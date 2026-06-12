@@ -19,10 +19,6 @@ def get_by_id(courier_id):
 def get_all():
     with get_session() as session:
         return courier_repository.get_all(session)
-    
-def get_available_couriers():
-    with get_session() as session:
-        return courier_repository.get_available_couriers(session)
 
 def create(courier_data):
     _validate_data(courier_data)
@@ -43,7 +39,6 @@ def create(courier_data):
             email = courier_data["email"],
             password = password_hash,
             phone_number = courier_data["phone_number"],
-            max_load = courier_data.get("max_load"),
             birth_date = dataOrdinata,
             current_cap = courier_data.get("current_cap")
         )
@@ -71,7 +66,6 @@ def update(courier_id,courier_data):
             email = courier_data["email"],
             password = password_hash,
             phone_number = courier_data["phone_number"],
-            max_load = courier_data.get("max_load"),
             birth_date = courier_data["birth_date"],
             current_cap = courier_data.get("current_cap")
         )
@@ -105,11 +99,6 @@ def update_current_cap(courier_id,current_cap):
             courier.current_cap = current_cap
 
         return courier_repository.update(session,courier)
-
-
-
-        
-
         
 def delete_by_id(courier_id):
     with get_session() as session:
@@ -121,8 +110,6 @@ def delete_by_id(courier_id):
         
         return True
     
-        
-
 def _validate_data(courier_data):
     for field in ["name","surname","email","password","phone_number","birth_date"]:
         if field not in courier_data:
@@ -145,10 +132,6 @@ def _validate_data(courier_data):
     if len(courier_data["phone_number"]) != 10:
         raise AppException("Il numero di telefono deve avere 10 caratteri",400)
     
-    if courier_data.get("max_load") is not None:
-        if type(courier_data.get("max_load")) != int or courier_data["max_load"] < 0:
-            raise AppException("Il carico massimo non è valido",400)
-    
     if len(courier_data["birth_date"]) > 10:
         raise AppException("La data di nascita deve avere meno di 10 caratteri",400)
     
@@ -161,20 +144,20 @@ def _validate_data(courier_data):
         except:
             raise AppException("Il Cap corrente deve essre numerico",400)
 
-    dataStringa = courier_data["birth_date"]
-    anno, mese, giorno = dataStringa.split("-")
+    StringData = courier_data["birth_date"]
+    year, month, day = StringData.split("-")
 
-    if len(anno) != 4:
+    if len(year) != 4:
         raise AppException("L'anno deve avere 4 cifre",400)
-    if len(mese) != 2:
+    if len(month) != 2:
         raise AppException("Il mese deve avere 2 cifre",400)
-    if len(giorno) != 2:
+    if len(day) != 2:
         raise AppException("Il giorno deve avere 2 cifre",400)
 
-    data_nascita = date(int(anno), int(mese), int(giorno))
+    birth_date = date(int(year), int(month), int(day))
     oggi = date.today()
 
-    eta = oggi.year - data_nascita.year
+    eta = oggi.year - birth_date.year
 
     if eta < 18:
         raise AppException("Il corriere deve avere piu di 18 anni",400)

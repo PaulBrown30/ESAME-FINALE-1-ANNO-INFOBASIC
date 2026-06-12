@@ -22,16 +22,7 @@ def get_all():
         return jsonify([c.to_dict() for c in couriers]),200
 
     except AppException as e:
-        return jsonify(e.to_dict()),e.status
-    
-@courier_bp.route("/couriers/available")
-def get_available_couriers():
-    try:
-        couriers = courier_service.get_available_couriers()
-        return jsonify([c.to_dict() for c in couriers]),200
-
-    except AppException as e:
-        return jsonify(e.to_dict()),e.status    
+        return jsonify(e.to_dict()),e.status  
 
 @courier_bp.route("/couriers/create", methods = ["POST"])
 def create():

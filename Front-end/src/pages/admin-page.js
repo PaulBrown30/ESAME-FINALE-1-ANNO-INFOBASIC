@@ -323,7 +323,7 @@ function CourierRow({courier_data}) {
         ]),
         jd.td({className: "p-4 px-6 border-l-2 align-top"},[
             jd.p({className: "font-bold "},["Pacchi attivi"]),
-            jd.p({},[`${courier_data.packages.length}/${courier_data.max_load}`])
+            jd.p({},[`${courier_data.packages.length}`])
         ]),
     ])
 }

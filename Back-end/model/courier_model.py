@@ -7,7 +7,6 @@ class Courier(Account):
 
     id = Column(Integer,ForeignKey("account.id", ondelete= "CASCADE"),primary_key= True)
     phone_number = Column(String(10), nullable= False, unique=True)
-    max_load = Column(Integer, nullable= False, default = 10)
     birth_date = Column(String(10), nullable= False)
     current_cap = Column(String(5), nullable= False, default= "65124")
 
@@ -18,10 +17,10 @@ class Courier(Account):
     }
 
     def __repr__(self):
-        return f"[{__class__.__tablename__}] --> (name: {self.name}, surname: {self.surname}, email: {self.email}, password: {self.password}, phone_number: {self.phone_number}, max_load: {self.max_load}, birth date: {self.birth_date})"
+        return f"[{__class__.__tablename__}] --> (name: {self.name}, surname: {self.surname}, email: {self.email}, password: {self.password}, phone_number: {self.phone_number}, birth date: {self.birth_date})"
     
     def __str__(self):
-        return f"{self.name} - {self.surname} - {self.email} - {self.phone_number} - {self.max_load} - {self.birth_date}"
+        return f"{self.name} - {self.surname} - {self.email} - {self.phone_number} - {self.birth_date}"
         
     def to_dict(self):
         return {
@@ -29,7 +28,6 @@ class Courier(Account):
             "name": self.name,
             "surname": self.surname,
             "phone_number": self.phone_number,
-            "max_load": self.max_load,
             "birth_date": self.birth_date,
             "type": self.account_type,
             "current_cap": self.current_cap,

@@ -13,9 +13,6 @@ def get_all(session):
     return session.execute(select(Courier).options(selectinload(Courier.packages)
             .selectinload(Package.statuses),with_loader_criteria(Package,Package.active == True))).unique().scalars().all()
 
-def get_available_couriers(session):
-    return session.execute(select(Courier).outerjoin(Courier.packages,Package.active == True).group_by(Courier.id, Account.id).having(func.count(Package.id)< Courier.max_load)).scalars().all()
-
 def get_less_packages_courier(session):
     return session.execute(select(Courier).outerjoin(Courier.packages).group_by(Account.id, Courier.id)
                            .order_by(func.count(Package.id).filter(Package.active == True).asc())
