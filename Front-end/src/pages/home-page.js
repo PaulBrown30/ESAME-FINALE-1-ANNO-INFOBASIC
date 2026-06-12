@@ -33,7 +33,7 @@ export function HomePage() {
         })
     }
 
-    return jd.div({className:"flex flex-col bg-amber-200"},[
+    return jd.div({className:"flex flex-col bg-white h-screen"},[
         HomeHeader(),
         jd.div({className: "flex relative justify-center p-4"},[
             jd.img({className: "h-200 w-full object-cover object-top rounded-2xl",src:"./assets/homepage.png"},[]),
@@ -158,8 +158,77 @@ export function HomePage() {
                 },[])
             ])          
         ]),
-        jd.div({className:"border-t border-white bg-amber-500"},[
-            jd.div({className: "flex flex-col container m-auto font-bold items-center p-3 gap-1"},[
+        jd.div({className:"border-t border-white bg-white pb-4"},[
+            jd.div({className: "flex flex-row container m-auto font-bold p-3 gap-6 justify-between"},[
+                jd.div({className: "card border border-gray-300 shadow-xl bg-amber-300"},[
+                    jd.div({className: "card-body flex flex-col gap-4"},[
+                        jd.div({className: "bg-white flex flex-row p-3 rounded-2xl shadow-lg justify-around"},[
+                            jd.div({ className: "flex flex-row gap-2"},[
+                                jd.lucide("Star",{className: "text-amber-400 fill-amber-400 size-5"}),
+                                jd.lucide("Star",{className: "text-amber-400 fill-amber-400 size-5"}),
+                                jd.lucide("Star",{className: "text-amber-400 fill-amber-400 size-5"}),
+                                jd.lucide("Star",{className: "text-amber-400 fill-amber-400 size-5"}),
+                                jd.lucide("Star",{className: "text-amber-400 fill-amber-400 size-5"})
+                            ])
+                        ]),
+                        jd.div({className: "bg-white h-full flex flex-row p-3 rounded-2xl shadow-lg justify-around"},[
+                            jd.p({className: ""},["Ho ordinato un divano e quando è arrivato avevo già cambiato casa tre volte. LumacaExpress™ non è un servizio di spedizione, è un viaggio nel tempo. Cinque stelle per la coerenza! — Mariano V."])
+                        ]),
+                    ])
+                ]),
+                jd.div({className: "card border border-gray-300 shadow-xl bg-amber-300"},[
+                    jd.div({className: "card-body flex flex-col gap-4"},[
+                        jd.div({className: "bg-white flex flex-row p-3 rounded-2xl shadow-lg justify-around"},[
+                            jd.div({ className: "flex flex-row gap-2"},[
+                                jd.lucide("Star",{className: "text-amber-400 fill-amber-400 size-5"}),
+                                jd.lucide("Star",{className: "text-amber-400 fill-amber-400 size-5"}),
+                                jd.lucide("Star",{className: "text-amber-400 fill-amber-400 size-5"}),
+                                jd.lucide("Star",{className: "text-amber-400 fill-amber-400 size-5"}),
+                                jd.lucide("Star",{className: "text-amber-400 fill-amber-400 size-5"})
+                            ])
+                        ]),
+                        jd.div({className: "bg-white h-full flex flex-row p-3 rounded-2xl shadow-lg justify-around"},[
+                            jd.p({className: ""},["Ho comprato il regalo di Natale per mio figlio ad agosto. È arrivato a Pasqua, ma la sorpresa è stata doppia! Il corriere LumacaExpress™ ormai è uno di famiglia, si è fermato anche a pranzo. — Elena R."])
+                        ]),
+                    ])
+                ]),
+                jd.div({className: "card border border-gray-300 shadow-xl bg-amber-300"},[
+                    jd.div({className: "card-body flex flex-col gap-4"},[
+                        jd.div({className: "bg-white flex flex-row p-3 rounded-2xl shadow-lg justify-around"},[
+                            jd.div({ className: "flex flex-row gap-2"},[
+                                jd.lucide("Star",{className: "text-amber-400 fill-amber-400 size-5"}),
+                                jd.lucide("Star",{className: "text-amber-400 fill-amber-400 size-5"}),
+                                jd.lucide("Star",{className: "text-amber-400 fill-amber-400 size-5"}),
+                                jd.lucide("Star",{className: "text-amber-400 fill-amber-400 size-5"}),
+                                jd.lucide("Star",{className: "text-amber-400 fill-amber-400 size-5"})
+                            ])
+                        ]),
+                        jd.div({className: "bg-white h-full flex flex-row p-3 rounded-2xl shadow-lg justify-around"},[
+                            jd.p({className: ""},["Non posso prendermela con loro per il ritardo, d'altronde il disclaimer nel footer parla chiaro! Pacco arrivato integro, un po' impolverato, ma la scatola vintage ha il suo fascino. — Claudio F."])
+                        ]),
+                    ])
+                ]),
+                jd.div({className: "card border border-gray-300 shadow-xl bg-amber-300"},[
+                    jd.div({className: "card-body flex flex-col gap-4"},[
+                        jd.div({className: "bg-white flex flex-row p-3 rounded-2xl shadow-lg justify-around"},[
+                            jd.div({ className: "flex flex-row gap-2"},[
+                                jd.lucide("Star",{className: "text-amber-400 fill-amber-400 size-5"}),
+                                jd.lucide("Star",{className: "text-amber-400 fill-amber-400 size-5"}),
+                                jd.lucide("Star",{className: "text-amber-400 fill-amber-400 size-5"}),
+                                jd.lucide("Star",{className: "text-amber-400 fill-amber-400 size-5"}),
+                                jd.lucide("Star",{className: "text-amber-400 fill-amber-400 size-5"})
+                            ])
+                        ]),
+                        jd.div({className: "bg-white h-full flex flex-row p-3 rounded-2xl shadow-lg justify-around"},[
+                            jd.p({className: ""},["Sul sito c'era scritto 'Consegne rapide (secondo i nostri standard)' e sono stati di parola. Il pacco è arrivato dopo sei mesi esatti, perfettamente in linea con la velocità di una lumaca. Grandiosi. — Pietro S."])
+                        ]),
+                    ])
+                ])
+            ])
+        ]),
+
+        jd.div({className:"border-t border-white bg-gray-900 h-full"},[
+            jd.div({className: "flex flex-col container m-auto font-bold items-center p-3 gap-1 text-white"},[
                 jd.p({},["LumacaExpress™ è un marchio registrato. Consegne rapide (secondo i nostri standard)"]),
                 jd.p({},["LumacaExpress™ declina ogni responsabilità per consegne non effettuate entro il secolo corrente."]),
                 jd.p({},["Spediamo oggi, consegniamo un giorno. Forse."])
