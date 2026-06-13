@@ -55,7 +55,10 @@ export function AddCourierPage() {
         fetch(`http://127.0.0.1:5000/api/couriers/create`,
             {method: "POST",
             body: JSON.stringify(data),
-            headers: {"Content-Type": "application/json"}
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
         })
         .then(async (res)=> {
             const data = await res.json()

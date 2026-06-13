@@ -1,12 +1,13 @@
 from flask import Blueprint,jsonify,request
 from service import user_service
 from exception.app_exception import AppException
-from controller.auth_controller import token_required
+from controller.auth_controller import token_required,role_required
 
 user_bp = Blueprint("user",__name__,url_prefix="/api")
 
 @user_bp.route("/users/<int:user_id>")
 @token_required
+@role_required("admin","user")
 def get_by_id(user_id):
     
     try:
@@ -27,6 +28,8 @@ def create():
         return jsonify(e.to_dict()),e.status
     
 @user_bp.route("/users/<int:user_id>/add_package", methods = ["POST"])
+@token_required
+@role_required("user")
 def add_package(user_id):
     
     try:

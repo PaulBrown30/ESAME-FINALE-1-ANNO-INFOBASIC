@@ -1,6 +1,7 @@
 from flask import Blueprint,jsonify,request
 from service import package_service
 from exception.app_exception import AppException
+from controller.auth_controller import token_required,role_required
 
 package_bp = Blueprint("package",__name__,url_prefix="/api")
 
@@ -14,6 +15,8 @@ def get_by_id(package_id):
         return jsonify(e.to_dict()),e.status
     
 @package_bp.route("/packages")
+@token_required
+@role_required("admin")
 def get_all():   
     try:
         packages = package_service.get_all()
@@ -23,6 +26,8 @@ def get_all():
         return jsonify(e.to_dict()),e.status    
 
 @package_bp.route("/packages/create", methods = ["POST"])
+@token_required
+@role_required("admin")
 def create():
     try:
         dati_package = request.get_json()
@@ -33,6 +38,8 @@ def create():
         return jsonify(e.to_dict()),e.status
    
 @package_bp.route("/packages/<package_id>", methods = ["DELETE"])
+@token_required
+@role_required("admin")
 def delete_by_id(package_id):
     try:
         package_service.delete_by_id(package_id)
@@ -42,6 +49,8 @@ def delete_by_id(package_id):
         return jsonify(e.to_dict()),e.status
     
 @package_bp.route("/packages/<package_id>/add_status", methods = ["POST"])
+@token_required
+@role_required("courier","admin")
 def add_status(package_id):
     
     try:
@@ -54,6 +63,8 @@ def add_status(package_id):
         return jsonify(e.to_dict()),e.status
     
 @package_bp.route("/packages/<package_id>/set_inactive", methods = ["PATCH"])
+@token_required
+@role_required("courier","admin")
 def set_inactive(package_id):
     
     try:

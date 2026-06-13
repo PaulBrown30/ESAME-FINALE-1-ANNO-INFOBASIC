@@ -51,7 +51,10 @@ export function UserPage() {
         fetch(`http://127.0.0.1:5000/api/users/${user_id}/add_package`,
             {method: "POST",
             body: JSON.stringify({"package_id":package_code}),
-            headers: {"Content-Type": "application/json"}}
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }}
         )
         .then(async res => {
             const package_data = await res.json()

@@ -188,7 +188,10 @@ export function CourierPage() {
         fetch(`http://127.0.0.1:5000/api/packages/${CourierPackages()[0].id}/add_status`, {
             method: "POST",
             body: JSON.stringify({ "status_id": status_id, "courier_id": parseInt(courier_id) }),
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json" 
+            },
         })
         .then(async (res) => {
             SetLoading(true)

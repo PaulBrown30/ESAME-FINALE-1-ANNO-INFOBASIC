@@ -1,12 +1,13 @@
 from flask import Blueprint,jsonify,request
 from service import courier_service
 from exception.app_exception import AppException
-from controller.auth_controller import token_required
+from controller.auth_controller import token_required,role_required
 
 courier_bp = Blueprint("courier",__name__,url_prefix="/api")
 
 @courier_bp.route("/couriers/<int:courier_id>")
 @token_required
+@role_required("admin","courier")
 def get_by_id(courier_id):   
     try:
         courier = courier_service.get_by_id(courier_id)
@@ -16,6 +17,8 @@ def get_by_id(courier_id):
         return jsonify(e.to_dict()),e.status
     
 @courier_bp.route("/couriers")
+@token_required
+@role_required("admin")
 def get_all():   
     try:
         couriers = courier_service.get_all()
@@ -25,6 +28,8 @@ def get_all():
         return jsonify(e.to_dict()),e.status  
 
 @courier_bp.route("/couriers/create", methods = ["POST"])
+@token_required
+@role_required("admin")
 def create():
     try:
         dati_courier = request.get_json()
@@ -35,6 +40,8 @@ def create():
         return jsonify(e.to_dict()),e.status
    
 @courier_bp.route("/couriers/<int:courier_id>", methods = ["PATCH"])
+@token_required
+@role_required("admin","courier")
 def update(courier_id):  
     try:
         dati_courier = request.get_json()
@@ -45,6 +52,8 @@ def update(courier_id):
         return jsonify(e.to_dict()),e.status
 
 @courier_bp.route("/couriers/<int:courier_id>", methods= ["DELETE"])
+@token_required
+@role_required("admin")
 def delete_by_id(courier_id):
     try:
         courier_service.delete_by_id(courier_id)

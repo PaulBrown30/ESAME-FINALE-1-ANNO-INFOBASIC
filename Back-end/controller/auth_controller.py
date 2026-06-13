@@ -37,11 +37,14 @@ def token_required(f):
             g.email = payload["email"]
             g.account_type = payload["account_type"]
   
-            id_key = kwargs[f"{payload["account_type"]}_id"]
-            print(id_key)
+            expected_id_name = f"{payload['account_type']}_id"
+            if expected_id_name in kwargs:
 
-            if str(g.id) != str(id_key):
-                return jsonify({"error": "Accesso negato! Non sei autorizzato a vedere questa risorsa."}), 403
+                id_key = kwargs[expected_id_name]
+                print(id_key)
+
+                if str(g.id) != str(id_key):
+                    return jsonify({"error": "Accesso negato! Non sei autorizzato a vedere questa risorsa."}), 403
 
 
         except ValueError as e:
@@ -55,7 +58,7 @@ def role_required(*ammitted_roles):
     def decorator(f):
         @wraps(f)
         def decorated(*args, **kwargs):
-            if g.user_ruolo not in ammitted_roles:
+            if g.account_type not in ammitted_roles:
                 return jsonify({"error": "Accesso negato! Ruolo non autorizzato."}), 403
 
             return f(*args, **kwargs)

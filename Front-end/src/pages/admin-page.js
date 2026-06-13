@@ -39,7 +39,15 @@ export function AdminPage() {
         if (res.ok) {
             SetAdminData(admin_data)
             
-                fetch(`http://127.0.0.1:5000/api/packages`)
+                fetch(`http://127.0.0.1:5000/api/packages`,
+                    {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                )
                 .then(async (res) => {
                     const packages = await res.json()
                     console.log(packages)
@@ -53,7 +61,15 @@ export function AdminPage() {
                 })
 
             
-                fetch(`http://127.0.0.1:5000/api/couriers`)
+                fetch(`http://127.0.0.1:5000/api/couriers`,
+                    {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    }
+                )
                 .then(async (res) => {
                     const couriers = await res.json()
                     console.log(couriers)
