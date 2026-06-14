@@ -34,36 +34,36 @@ def create(package_data):
         if less_package_courier is None:
             raise AppException("Nessun corriere trovato",404)
         
-        nomi_paese = pgeocode.Nominatim('it')
+        city_name = pgeocode.Nominatim('it')
 
         cap1 = package_data["sender_cap"]
         cap2 = package_data["receiver_cap"]
 
 
-        info_cap1 = nomi_paese.query_postal_code(cap1)
-        info_cap2 = nomi_paese.query_postal_code(cap2)
+        info_cap1 = city_name.query_postal_code(cap1)
+        info_cap2 = city_name.query_postal_code(cap2)
 
         # è tutto normale davide, sto controllando l'esistenza dei CAP confrontando due valori dell'oggetto creato
         # (sono NaN se non esiste il CAP, e i Nan sono sempre diversi tra loro)
-        test_cap1 = nomi_paese.query_postal_code(cap1)
-        test_cap2 = nomi_paese.query_postal_code(cap2)
+        test_cap1 = city_name.query_postal_code(cap1)
+        test_cap2 = city_name.query_postal_code(cap2)
 
         if info_cap1["latitude"] != test_cap1["latitude"]:
             raise AppException("Il Cap del mittente non è valido",400)
         if info_cap2["latitude"] != test_cap2["latitude"]:
             raise AppException("Il Cap del destinatario non è valido",400)            
 
-        coordinate1 = (info_cap1['latitude'], info_cap1['longitude'])
-        coordinate2 = (info_cap2['latitude'], info_cap2['longitude'])
+        coordinate_1 = (info_cap1['latitude'], info_cap1['longitude'])
+        coordinate_2 = (info_cap2['latitude'], info_cap2['longitude'])
 
         if less_package_courier.packages != []:
             cap3 = less_package_courier.packages[-1].receiver_cap
-            info_cap3 = nomi_paese.query_postal_code(cap3)
+            info_cap3 = city_name.query_postal_code(cap3)
             coordinate3 = (info_cap3['latitude'], info_cap3['longitude'])
-            distance = geodesic(coordinate3, coordinate1).km + geodesic(coordinate1, coordinate2).km
+            distance = geodesic(coordinate3, coordinate_1).km + geodesic(coordinate_1, coordinate_2).km
 
         else:
-            distance = geodesic(coordinate1, coordinate2).km
+            distance = geodesic(coordinate_1, coordinate_2).km
 
         calculated_price = (distance * package_data["weight"])/1000
         
@@ -101,7 +101,12 @@ def create(package_data):
         if package_repository.check_used_id(session,package) is not None:
             raise AppException("Esiste gia un pacco con questo id",409)
 
-        return package_repository.create(session,package)
+        result = package_repository.create(session,package)
+
+        if result is False:
+            raise AppException("Stato iniziale non trovato!",409)
+        
+        return result
     
 def delete_by_id(package_id):
     with get_session() as session:
@@ -150,8 +155,11 @@ def set_inactive(package_id):
         
         is_inactive = package_repository.set_inactive(session,package_id)
 
-        if is_inactive is False:
+        if is_inactive == 1:
             raise AppException("Pacco non trovato!",404)
+        
+        if is_inactive == 2:
+            raise AppException("Il Pacco è gia inattivo!",404)
         
         return True
     
@@ -196,15 +204,15 @@ def _validate_data(package_data):
 
     try:
         package_data["weight"] = float(package_data["weight"])
-
-        if type(package_data["weight"]) is not float and type(package_data["weight"]) is not int:
-            raise AppException(f"Il campo weight deve essere un numero",400)
-        if package_data["weight"] < 0:
-            raise AppException(f"Il campo weight richeide un valore positivo",400)    
-        if package_data["weight"] >= 1000:
-            raise AppException(f"Il campo weight non puo superare il valore di 1000",400)
     except:
         raise AppException(f"Il campo {field} deve essere un numero",400)
+
+    if type(package_data["weight"]) is not float and type(package_data["weight"]) is not int:
+        raise AppException(f"Il campo weight deve essere un numero",400)
+    if package_data["weight"] < 0:
+        raise AppException(f"Il campo weight richeide un valore positivo",400)    
+    if package_data["weight"] >= 1000:
+        raise AppException(f"Il campo weight non puo superare il valore di 1000",400)
 
 
         

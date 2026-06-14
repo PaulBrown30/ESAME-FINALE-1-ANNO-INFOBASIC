@@ -57,8 +57,11 @@ def add_status(session,package_id,status_id):
 def set_inactive(session,package_id):
     package = session.get(Package,package_id)
     if package == None:
-        return False
+        return 1
     
+    if package.active == False:
+        return 2
+
     package.active = False
     
     session.commit()

@@ -135,14 +135,13 @@ def _validate_data(courier_data):
     if len(courier_data["birth_date"]) > 10:
         raise AppException("La data di nascita deve avere meno di 10 caratteri",400)
     
-
     if courier_data.get("current_cap") is not None:    
         if len(courier_data["current_cap"]) != 5:
             raise AppException("Il Cap corrente deve avere 5 caratteri",400)
         try:
             conversione = int(courier_data["current_cap"])
         except:
-            raise AppException("Il Cap corrente deve essre numerico",400)
+            raise AppException("Il Cap corrente deve essere numerico",400)
 
     StringData = courier_data["birth_date"]
     year, month, day = StringData.split("-")

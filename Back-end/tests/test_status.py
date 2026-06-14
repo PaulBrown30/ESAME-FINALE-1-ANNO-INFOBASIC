@@ -8,11 +8,10 @@ from persistence.db_config import db_init
 
 class TestStatus(unittest.TestCase):
 
+    #Setup si avvia a ogni singola funzione
     def setUp(self):
         db_init()
     
-
-
     #Test dati perfetti
     def test_create_object_status(self):
         s = Status(id = "S-001", name = "test 1", description = "descrizione test 1")
