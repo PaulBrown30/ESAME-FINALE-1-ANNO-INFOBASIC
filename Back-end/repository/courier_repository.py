@@ -30,6 +30,7 @@ def update(session,courier):
     courier = session.merge(courier)
     session.commit()
     session.refresh(courier)
+    courier = get_by_id(session,courier.id)
     return courier
 
 def delete_by_id(session,courier_id):
