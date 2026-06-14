@@ -65,7 +65,7 @@ def _validate_data(status_data):
             raise AppException(f"Il campo {field} non è valido",400)
     
     if len(status_data["id"]) > 5:
-        raise AppException("L'id deve avere massimo 10 caratteri",400)    
+        raise AppException("L'id deve avere massimo 5 caratteri",400)    
 
     if len(status_data["name"]) > 30:
         raise AppException("Il nome deve avere massimo 30 caratteri",400)
