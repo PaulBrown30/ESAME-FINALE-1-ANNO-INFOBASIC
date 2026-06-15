@@ -58,6 +58,7 @@ def _validate_data(admin_data):
         raise AppException("Password non valida!",400)          
 
 
+
         
 
     
