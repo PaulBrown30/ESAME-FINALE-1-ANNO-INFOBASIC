@@ -4,8 +4,9 @@ from exception.app_exception import AppException
 import bcrypt
 import datetime
 import jwt
+import os
 
-SECRET_KEY = "Chiave-segreta di prova"
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 def login(access_data):
 

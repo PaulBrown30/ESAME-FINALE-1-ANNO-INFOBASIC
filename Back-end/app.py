@@ -8,6 +8,9 @@ from controller.status_controller import status_bp
 from controller.user_controller import user_bp
 from controller.auth_controller import auth_bp
 import samples
+import os
+from dotenv import load_dotenv
+load_dotenv(dotenv_path=".env.local")
 
 
 app = Flask(__name__)
